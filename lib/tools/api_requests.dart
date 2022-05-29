@@ -75,4 +75,8 @@ class DioClient {
 
     return [listChart1, listChart2];
   }
+
+  Future<void> getQuery(String route, Map<String, dynamic> args) async {
+    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+  }
 }

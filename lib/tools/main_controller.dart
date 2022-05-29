@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:covidz/tools/classes.dart';
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +25,8 @@ class MainController extends GetxController {
   final currentChronicValue = "nombre de deces".obs;
 
   final filterstate = false.obs;
+
+  final growthState = false.obs;
 
   final statList1 = <ChartData>[].obs;
 
@@ -49,6 +52,32 @@ class MainController extends GetxController {
 
   final minWidth = 15000.0.obs;
 
+  final featureSelectionMethods = [
+    "FeatureWiz",
+    "Score de Chi-2",
+    "Score de Ficher",
+    "mutual Info Classifier",
+  ];
+
+  final currentFeatureMethode = "Score de Chi-2".obs;
+
+  final featuresList = <ChartData>[].obs;
+
+  final variableCibleList = [
+    "evolution",
+    "hospitalisation",
+    "entrer en soins intensifs",
+    "deces",
+  ];
+
+  final currentVariableCible = "evolution".obs;
+
+  final standar = "yes".obs;
+
+  final normalList = ["Horizontal", "Vertical"];
+
+  final normalList2 = [].obs;
+
   // Controllers
 
   final PageController page = PageController();
@@ -58,6 +87,20 @@ class MainController extends GetxController {
   final textFieldController3 = TextEditingController(text: "0.05");
   final textFieldController4 = TextEditingController(text: "0");
   final textFieldController5 = TextEditingController(text: "100");
+  final textFieldController6 = TextEditingController(text: "2600");
+  final textFieldController7 = TextEditingController(text: "0");
+  final textFieldController8 = TextEditingController(text: "20");
+  final textFieldController9 = TextEditingController(text: "80");
+  final textFieldController10 = TextEditingController(text: "20");
+
+  final statVisible1 = false.obs;
+  final statVisible2 = false.obs;
+  final statVisible3 = false.obs;
+  final datasetVisible1 = false.obs;
+  final predictVisible1 = false.obs;
+  final settingsVisible1 = false.obs;
+
+  final sideMenuDisplay = SideMenuDisplayMode.open.obs;
 
   // Functions
 
@@ -79,6 +122,10 @@ class MainController extends GetxController {
 
   void filterMode(newval) {
     filterstate.value = newval;
+  }
+
+  void growthStateMode(newval) {
+    growthState.value = newval;
   }
 
   void changeStatData1(newval) {
@@ -120,5 +167,61 @@ class MainController extends GetxController {
 
   void setMinWidth(newval) {
     minWidth.value = newval;
+  }
+
+  void statVisibleFunc1(vis) {
+    statVisible1.value = !vis;
+  }
+
+  void statVisibleFunc2(vis) {
+    statVisible2.value = !vis;
+  }
+
+  void statVisibleFunc3(vis) {
+    statVisible3.value = !vis;
+  }
+
+  void datasetVisibleFunc1(vis) {
+    datasetVisible1.value = !vis;
+  }
+
+  void predictVisibleFunc1(vis) {
+    predictVisible1.value = !vis;
+  }
+
+  void settingsVisibleFunc1(vis) {
+    settingsVisible1.value = !vis;
+  }
+
+  void changeSideMenuDisplay() {
+    if (sideMenuDisplay.value == SideMenuDisplayMode.open) {
+      sideMenuDisplay.value = SideMenuDisplayMode.compact;
+    } else {
+      sideMenuDisplay.value = SideMenuDisplayMode.open;
+    }
+  }
+
+  void changeFeatureSelection(newval) {
+    currentFeatureMethode.value = newval;
+  }
+
+  void changeFeatureList(newval) {
+    featuresList.value = newval;
+  }
+
+  void changeVariableCible(newval) {
+    currentVariableCible.value = newval;
+  }
+
+  void changeStandar(newval) {
+    standar.value = newval;
+  }
+
+  void addToNormalList(newval) {
+    normalList2.add(newval);
+  }
+
+  void removeFromNormalList(newval) {
+    normalList2.remove(newval);
   }
 }

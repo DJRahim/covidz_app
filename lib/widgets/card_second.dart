@@ -20,7 +20,7 @@ class SecondCard extends StatelessWidget {
         topRight: Radius.circular(10.0),
       )),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(3.0),
         child: body,
       ),
     );

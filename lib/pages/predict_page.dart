@@ -22,64 +22,71 @@ class PredictPage extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            MainCard(
-              title: "Predict Page",
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SecondCard(
-                    body: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const AutoSizeText("Choisir un pays :  "),
-                                CountryCodePicker(
-                                  onChanged: (countCode) {
-                                    mainController.changeCountry(countCode);
-                                  },
-                                  initialSelection: 'DZ',
-                                  favorite: const ['+213', 'DZ'],
-                                  showCountryOnly: true,
-                                  showOnlyCountryWhenClosed: true,
-                                  alignLeft: false,
-                                  dialogBackgroundColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                  dialogTextStyle: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
+            Obx(
+              () => MainCard(
+                ontap: (vis) {
+                  mainController.predictVisibleFunc1(vis);
+                },
+                vis: mainController.predictVisible1.value,
+                title: "Predict Page",
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SecondCard(
+                      body: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const AutoSizeText("Choisir un pays :  "),
+                                  CountryCodePicker(
+                                    onChanged: (countCode) {
+                                      mainController.changeCountry(countCode);
+                                    },
+                                    initialSelection: 'DZ',
+                                    favorite: const ['+213', 'DZ'],
+                                    showCountryOnly: true,
+                                    showOnlyCountryWhenClosed: true,
+                                    alignLeft: false,
+                                    dialogBackgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    dialogTextStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const AutoSizeText(
-                                    "Nombre de jours a predire :  "),
-                                SizedBox(
-                                  width: 50.0,
-                                  height: 10.0,
-                                  child: TextField(
-                                    controller:
-                                        mainController.textFieldController1,
-                                    // decoration: const InputDecoration(
-                                    //     labelText: "Enter your number"),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const AutoSizeText(
+                                      "Nombre de jours a predire :  "),
+                                  SizedBox(
+                                    width: 50.0,
+                                    height: 10.0,
+                                    child: TextField(
+                                      controller:
+                                          mainController.textFieldController1,
+                                      // decoration: const InputDecoration(
+                                      //     labelText: "Enter your number"),
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Obx(
-                          () => Visibility(
+                                ],
+                              ),
+                            ],
+                          ),
+                          Visibility(
                             replacement: Padding(
                               padding: const EdgeInsets.all(6),
                               child: ElevatedButton(
@@ -111,7 +118,7 @@ class PredictPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 800,
+                                    width: 600,
                                     child: Column(
                                       children: [
                                         Row(
@@ -120,7 +127,7 @@ class PredictPage extends StatelessWidget {
                                           children: [
                                             const Text("Growth : "),
                                             SizedBox(
-                                              width: 300,
+                                              width: 200,
                                               child: RadioListTile(
                                                 title: const Text("Linear"),
                                                 value: "linear",
@@ -129,11 +136,13 @@ class PredictPage extends StatelessWidget {
                                                 onChanged: (val) {
                                                   mainController
                                                       .changeGrowth(val);
+                                                  mainController
+                                                      .growthStateMode(false);
                                                 },
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 300,
+                                              width: 200,
                                               child: RadioListTile(
                                                 title: const Text("Logistic"),
                                                 value: "logistic",
@@ -142,10 +151,72 @@ class PredictPage extends StatelessWidget {
                                                 onChanged: (val) {
                                                   mainController
                                                       .changeGrowth(val);
+                                                  mainController
+                                                      .growthStateMode(true);
                                                 },
                                               ),
                                             ),
                                           ],
+                                        ),
+                                        Visibility(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(4.0),
+                                                    child: AutoSizeText(
+                                                        "cap :           "),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50.0,
+                                                    height: 10.0,
+                                                    child: TextField(
+                                                      controller: mainController
+                                                          .textFieldController6,
+                                                      // decoration: const InputDecoration(
+                                                      //     labelText: "Enter your number"),
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(4.0),
+                                                    child: AutoSizeText(
+                                                        "floor :           "),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50.0,
+                                                    height: 10.0,
+                                                    child: TextField(
+                                                      controller: mainController
+                                                          .textFieldController7,
+                                                      // decoration: const InputDecoration(
+                                                      //     labelText: "Enter your number"),
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          visible:
+                                              mainController.growthState.value,
                                         ),
                                         Row(
                                           mainAxisAlignment:
@@ -268,57 +339,59 @@ class PredictPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                Get.snackbar(
-                                  "Laoding",
-                                  "Processing query",
-                                  showProgressIndicator: true,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  isDismissible: false,
-                                  duration: const Duration(hours: 1),
-                                );
-                                var res = await _client.getProphetData(
-                                  "prophet",
-                                  {
-                                    "country": mainController.country.value,
-                                    "num_days": mainController
-                                        .textFieldController1.text,
-                                    "changepoint_range": mainController
-                                        .textFieldController2.text,
-                                    "changepoints_prior_scale": mainController
-                                        .textFieldController3.text,
-                                    "n_changepoints": mainController
-                                        .textFieldController4.text,
-                                    "first_date":
-                                        mainController.firstDate.value,
-                                    "growth": mainController.growth.value,
-                                  },
-                                );
-                                Get.closeAllSnackbars();
-                                mainController.changePredcitData1(res[0]);
-                                mainController.changePredcitData2(res[1]);
-                              },
-                              child: const Text("Afficher"),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  Get.snackbar(
+                                    "Laoding",
+                                    "Processing query",
+                                    showProgressIndicator: true,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    isDismissible: false,
+                                    duration: const Duration(hours: 1),
+                                  );
+                                  var res = await _client.getProphetData(
+                                    "prophet",
+                                    {
+                                      "country": mainController.country.value,
+                                      "num_days": mainController
+                                          .textFieldController1.text,
+                                      "changepoint_range": mainController
+                                          .textFieldController2.text,
+                                      "changepoints_prior_scale": mainController
+                                          .textFieldController3.text,
+                                      "n_changepoints": mainController
+                                          .textFieldController4.text,
+                                      "first_date":
+                                          mainController.firstDate.value,
+                                      "growth": mainController.growth.value,
+                                      "cap": mainController
+                                          .textFieldController6.text,
+                                      "floor": mainController
+                                          .textFieldController7.text,
+                                    },
+                                  );
+                                  Get.closeAllSnackbars();
+                                  mainController.changePredcitData1(res[0]);
+                                  mainController.changePredcitData2(res[1]);
+                                },
+                                child: const Text("Afficher"),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SecondCard(
-                    body: Obx(
-                      () => PredictChart(
+                    SecondCard(
+                      body: PredictChart(
                         chartDataHist: mainController.predictList1.value,
                         chartDataPredict: mainController.predictList2.value,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

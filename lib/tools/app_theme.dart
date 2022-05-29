@@ -12,6 +12,8 @@ class Themes {
       tertiary: Colors.white,
     ),
     scaffoldBackgroundColor: AppColors.baby,
+    selectedRowColor: Colors.blue[600],
+    hoverColor: Colors.blue[100],
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.gunMetal,
       foregroundColor: Colors.black,
@@ -33,6 +35,8 @@ class Themes {
       tertiary: Color.fromARGB(255, 81, 95, 114),
     ),
     scaffoldBackgroundColor: AppColors.darkGrey,
+    selectedRowColor: const Color.fromARGB(255, 17, 81, 136),
+    hoverColor: const Color.fromARGB(255, 110, 133, 151),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkmetal,
       foregroundColor: Colors.white,

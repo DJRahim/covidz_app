@@ -24,24 +24,29 @@ class DatasetPage extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            MainCard(
-              title: "Dataset Page",
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Fields
-                  SecondCard(
-                    body: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Text("Choisir le dataset :  "),
-                                Obx(
-                                  () => DropdownButton(
+            Obx(
+              () => MainCard(
+                ontap: (vis) {
+                  mainController.datasetVisibleFunc1(vis);
+                },
+                vis: mainController.datasetVisible1.value,
+                title: "Dataset Page",
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Fields
+                    SecondCard(
+                      body: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text("Choisir le dataset :  "),
+                                  DropdownButton(
                                     value: mainController.currentDataset.value,
                                     items: mainController.datasets
                                         .map((String items) {
@@ -54,80 +59,88 @@ class DatasetPage extends StatelessWidget {
                                       mainController.changeDataset(newValue);
                                     },
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Text("Nombre de lignes a afficher :  "),
-                                SizedBox(
-                                  width: 50.0,
-                                  height: 10.0,
-                                  child: TextField(
-                                    controller:
-                                        mainController.textFieldController5,
-                                    // decoration: const InputDecoration(
-                                    //     labelText: "Enter your number"),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text("Nombre de lignes a afficher :  "),
+                                  SizedBox(
+                                    width: 50.0,
+                                    height: 10.0,
+                                    child: TextField(
+                                      controller:
+                                          mainController.textFieldController5,
+                                      // decoration: const InputDecoration(
+                                      //     labelText: "Enter your number"),
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        // Buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text("Rafraîchir le dataset"),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (!await launchUrl(_url,
-                                    mode: LaunchMode.externalApplication)) {
-                                  throw 'Could not launch $_url';
-                                }
-                              },
-                              child: const Text(
-                                  "Acceder au formulaire (Google Forms)"),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (mainController.currentDataset.value ==
-                                    "Donnees du formulaire") {
-                                  mainController.setMinWidth(18000.0);
-                                } else {
-                                  mainController.setMinWidth(7000.0);
-                                }
-                                getDataset();
-                              },
-                              child: const Text("Afficher"),
-                            ),
-                          ],
-                        ),
-                      ],
+                                ],
+                              ),
+                            ],
+                          ),
+                          // Buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  _client.getQuery("refresh_dataset", {
+                                    "dataset":
+                                        mainController.currentDataset.value,
+                                  });
+                                },
+                                child: const Text("Rafraîchir le dataset"),
+                              ),
+                              mainController.currentDataset.value ==
+                                      "Donnees du formulaire"
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        if (!await launchUrl(_url,
+                                            mode: LaunchMode
+                                                .externalApplication)) {
+                                          throw 'Could not launch $_url';
+                                        }
+                                      },
+                                      child: const Text(
+                                          "Acceder au formulaire (Google Forms)"),
+                                    )
+                                  : Container(),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (mainController.currentDataset.value ==
+                                      "Donnees du formulaire") {
+                                    mainController.setMinWidth(18000.0);
+                                  } else {
+                                    mainController.setMinWidth(7000.0);
+                                  }
+                                  getDataset();
+                                },
+                                child: const Text("Afficher"),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  // Table
-                  SizedBox(
-                    width: 700,
-                    height: 500,
-                    child: SecondCard(
-                      body: Obx(
-                        () => DatasetTable(
+                    // Table
+                    SizedBox(
+                      width: 700,
+                      height: 500,
+                      child: SecondCard(
+                        body: DatasetTable(
                           headers: mainController.headers.value,
                           source: DatasetSource(mainController),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
