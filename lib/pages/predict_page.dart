@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:covidz/tools/api_requests.dart';
+import 'package:covidz/tools/dataset_source.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/widgets/card_main.dart';
 import 'package:covidz/widgets/card_second.dart';
+import 'package:covidz/widgets/dataset_table.dart';
 import 'package:covidz/widgets/prediction_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,15 +22,15 @@ class PredictPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Obx(
-              () => MainCard(
+        child: Obx(
+          () => Column(
+            children: [
+              MainCard(
                 ontap: (vis) {
                   mainController.predictVisibleFunc1(vis);
                 },
                 vis: mainController.predictVisible1.value,
-                title: "Predict Page",
+                title: "Prediction de taux d'infection (FBProphet)",
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -393,10 +395,229 @@ class PredictPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+              MainCard(
+                title: "Prediction de l'evolution des cas de COVID-19",
+                ontap: (vis) {
+                  mainController.predictVisibleFunc2(vis);
+                },
+                vis: mainController.predictVisible2.value,
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SecondCard(
+                      body: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: AutoSizeText(
+                                        "Dataset d'entraînement : "),
+                                  ),
+                                  DropdownButton(
+                                    value: mainController
+                                        .predictTrainDataset.value,
+                                    items: mainController.predictDatasets
+                                        .map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      mainController
+                                          .changeTrainDataset(newValue);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: AutoSizeText("Dataset de test : "),
+                                  ),
+                                  DropdownButton(
+                                    value:
+                                        mainController.predictTestDataset.value,
+                                    items: mainController.predictDatasets
+                                        .map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      mainController
+                                          .changeTestDataset(newValue);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child:
+                                        AutoSizeText("Modele de prediction : "),
+                                  ),
+                                  DropdownButton(
+                                    value: mainController
+                                        .currentPredictModel.value,
+                                    items: mainController.predictModels
+                                        .map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      mainController
+                                          .changePredictModel(newValue);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await getPredictions(context);
+                                  mainController.changePredictResult(true);
+                                },
+                                child: const Text("Executer"),
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: mainController.predictResult.value,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: SecondCard(
+                                    body: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const AutoSizeText(
+                                                "Les valeurs a afficher : "),
+                                            SizedBox(
+                                              height: 50,
+                                              width: 180,
+                                              child: CheckboxListTile(
+                                                value: mainController
+                                                    .predictListCheckbox1.value,
+                                                title: const AutoSizeText(
+                                                    "few_to_no_symptoms"),
+                                                onChanged: (newval) {
+                                                  mainController
+                                                      .changePredictList(
+                                                          newval, 0);
+                                                  mainController
+                                                      .updateRows(context);
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                              width: 180,
+                                              child: CheckboxListTile(
+                                                value: mainController
+                                                    .predictListCheckbox2.value,
+                                                title: const AutoSizeText(
+                                                    "complications"),
+                                                onChanged: (newval) {
+                                                  mainController
+                                                      .changePredictList(
+                                                          newval, 1);
+                                                  mainController
+                                                      .updateRows(context);
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                              width: 180,
+                                              child: CheckboxListTile(
+                                                value: mainController
+                                                    .predictListCheckbox3.value,
+                                                title:
+                                                    const AutoSizeText("death"),
+                                                onChanged: (newval) {
+                                                  mainController
+                                                      .changePredictList(
+                                                          newval, 2);
+                                                  mainController
+                                                      .updateRows(context);
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 700,
+                                          child: SecondCard(
+                                            body: DatasetTable(
+                                              headers: mainController
+                                                  .predictHeaders.value,
+                                              source: DatasetSource(
+                                                  mainController, true),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SecondCard(
+                                  body: Column(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> getPredictions(BuildContext context) async {
+    var res = await _client.getPredictRowsHeaders(
+      "predict",
+      {
+        "model": mainController.currentPredictModel.value,
+        "feature_model": mainController.predictFeatureSelect.value,
+        "num_features": mainController.textFieldController12.text,
+        "null_percentage": mainController.textFieldController9.text,
+        "test_percentage": mainController.textFieldController10.text,
+        "standarisation": mainController.standar.value == "Standarisation",
+        "normalisation": mainController.standar.value != "Standarisation",
+        "axis": mainController.normToggle.value,
+        "train_dataset": mainController.predictTrainDataset.value,
+        "test_dataset": mainController.predictTestDataset.value,
+      },
+      mainController,
+      context,
+    );
+
+    mainController.changePredictList(true, 0);
+    mainController.changePredictList(true, 1);
+    mainController.changePredictList(true, 2);
+
+    mainController.setMinWidth(18000.0);
+    mainController.setPredictRowsAndHeaders(res[0], res[1]);
   }
 }

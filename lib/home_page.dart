@@ -52,6 +52,18 @@ class Home extends GetView<MainController> {
           ),
           elevation: 0,
           actions: [
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(4.0, 4.0, 7.0, 4.0),
+                child: Text(
+                  "Profile name",
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             IconButton(
               onPressed: () {
                 if (Get.isDarkMode) {
@@ -66,6 +78,10 @@ class Home extends GetView<MainController> {
                   ? const Icon(Icons.light_mode_outlined)
                   : const Icon(Icons.dark_mode_outlined),
             ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.logout),
+            )
           ],
         ),
         body: Row(

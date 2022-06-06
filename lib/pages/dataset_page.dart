@@ -30,7 +30,7 @@ class DatasetPage extends StatelessWidget {
                   mainController.datasetVisibleFunc1(vis);
                 },
                 vis: mainController.datasetVisible1.value,
-                title: "Dataset Page",
+                title: "Datasets",
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -135,7 +135,7 @@ class DatasetPage extends StatelessWidget {
                       child: SecondCard(
                         body: DatasetTable(
                           headers: mainController.headers.value,
-                          source: DatasetSource(mainController),
+                          source: DatasetSource(mainController, false),
                         ),
                       ),
                     ),

@@ -1,5 +1,5 @@
-import 'dart:io';
-
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:covidz/assets/color_constants.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/home_page.dart';
 import 'package:covidz/pages/predict_page.dart';
@@ -42,7 +42,21 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/predict_page', page: () => PredictPage()),
         GetPage(name: '/settings_page', page: () => SettingsPage()),
       ],
-      home: Home(),
+      home: AnimatedSplashScreen(
+        nextScreen: Home(),
+        splash: const Text(
+          'COVIDZ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 50.0,
+            color: Color.fromARGB(255, 17, 70, 105),
+          ),
+        ),
+        splashTransition: SplashTransition.fadeTransition,
+        animationDuration: const Duration(milliseconds: 1500),
+        duration: 2000,
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }

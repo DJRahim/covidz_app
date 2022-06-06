@@ -4,12 +4,17 @@ import 'package:covidz/tools/main_controller.dart';
 import 'package:flutter/material.dart';
 
 class DatasetSource extends DataTableSource {
-  DatasetSource(this.controller);
+  DatasetSource(this.controller, this.predict);
   final MainController controller;
+  final bool predict;
 
   @override
   DataRow? getRow(int index) {
-    return controller.getRow(index);
+    if (predict) {
+      return controller.getRowPredict(index);
+    } else {
+      return controller.getRow(index);
+    }
   }
 
   @override
@@ -17,7 +22,11 @@ class DatasetSource extends DataTableSource {
 
   @override
   int get rowCount {
-    return controller.rows.value.length;
+    if (predict) {
+      return controller.predictRows.value.length;
+    } else {
+      return controller.rows.value.length;
+    }
   }
 
   @override

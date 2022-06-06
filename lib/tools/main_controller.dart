@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
@@ -72,11 +73,52 @@ class MainController extends GetxController {
 
   final currentVariableCible = "evolution".obs;
 
-  final standar = "yes".obs;
+  final standar = "Standarisation".obs;
 
-  final normalList = ["Horizontal", "Vertical"];
+  final normToggle = "Horizontal".obs;
 
-  final normalList2 = [].obs;
+  final predictModels = [
+    "Decision Tree Classifier",
+    "Decision Tree Regressor",
+    "Random Forest",
+    "Adaboost",
+    "SVM",
+    "Naive Bayes",
+  ];
+
+  final currentPredictModel = "Adaboost".obs;
+
+  final predictFeatureSelect = "FeatureWiz".obs;
+
+  final predictDatasets = ["formulaire"];
+
+  final predictTrainDataset = "formulaire".obs;
+
+  final predictTestDataset = "formulaire".obs;
+
+  final predictListCheckbox1 = true.obs;
+  final predictListCheckbox2 = true.obs;
+  final predictListCheckbox3 = true.obs;
+
+  final predictHeaders = <DataColumn>[
+    const DataColumn(
+      label: Text(''),
+    ),
+  ].obs;
+
+  final predictRows = <DataRow>[].obs;
+
+  final predictRowsOld = [].obs;
+
+  final predictResult = false.obs;
+
+  final predictfeatureSelectionMethods = [
+    "Aucune",
+    "FeatureWiz",
+    "Score de Chi-2",
+    "Score de Ficher",
+    "mutual Info Classifier",
+  ];
 
   // Controllers
 
@@ -92,12 +134,15 @@ class MainController extends GetxController {
   final textFieldController8 = TextEditingController(text: "20");
   final textFieldController9 = TextEditingController(text: "80");
   final textFieldController10 = TextEditingController(text: "20");
+  final textFieldController11 = TextEditingController(text: "20");
+  final textFieldController12 = TextEditingController(text: "60");
 
   final statVisible1 = false.obs;
   final statVisible2 = false.obs;
   final statVisible3 = false.obs;
   final datasetVisible1 = false.obs;
   final predictVisible1 = false.obs;
+  final predictVisible2 = false.obs;
   final settingsVisible1 = false.obs;
 
   final sideMenuDisplay = SideMenuDisplayMode.open.obs;
@@ -189,6 +234,10 @@ class MainController extends GetxController {
     predictVisible1.value = !vis;
   }
 
+  void predictVisibleFunc2(vis) {
+    predictVisible2.value = !vis;
+  }
+
   void settingsVisibleFunc1(vis) {
     settingsVisible1.value = !vis;
   }
@@ -217,11 +266,101 @@ class MainController extends GetxController {
     standar.value = newval;
   }
 
-  void addToNormalList(newval) {
-    normalList2.add(newval);
+  void changeNorm(index) {
+    if (index == 1) {
+      normToggle.value = "Horizontal";
+    } else {
+      normToggle.value = "Vertical";
+    }
   }
 
-  void removeFromNormalList(newval) {
-    normalList2.remove(newval);
+  void changePredictModel(newval) {
+    currentPredictModel.value = newval;
+  }
+
+  void changePredictFeatureSelect(newval) {
+    predictFeatureSelect.value = newval;
+  }
+
+  void changeTrainDataset(newval) {
+    predictTrainDataset.value = newval;
+  }
+
+  void changeTestDataset(newval) {
+    predictTestDataset.value = newval;
+  }
+
+  void changePredictList(newval, i) {
+    if (i == 0) {
+      predictListCheckbox1.value = newval;
+    }
+    if (i == 1) {
+      predictListCheckbox2.value = newval;
+    }
+    if (i == 2) {
+      predictListCheckbox3.value = newval;
+    }
+  }
+
+  DataRow getRowPredict(int index) {
+    return predictRows.value.elementAt(index);
+  }
+
+  void setPredictRowsAndHeaders(head, row) {
+    predictHeaders.value = head;
+    predictRows.value = row;
+  }
+
+  void changePredictResult(newval) {
+    predictResult.value = newval;
+  }
+
+  void updateRows(BuildContext context) {
+    predictRows.value = <DataRow>[];
+    var checkboxlist = [];
+
+    if (predictListCheckbox1.value) {
+      checkboxlist.add(2);
+    }
+    if (predictListCheckbox2.value) {
+      checkboxlist.add(0);
+    }
+    if (predictListCheckbox3.value) {
+      checkboxlist.add(1);
+    }
+
+    for (var item in predictRowsOld.value) {
+      if (checkboxlist.contains(item[1])) {
+        String t = "";
+        Color? c;
+        if (item[1] == 2) {
+          c = Theme.of(context).colorScheme.primaryContainer;
+          t = "few_to_no_symptoms";
+        }
+        if (item[1] == 0) {
+          c = Theme.of(context).colorScheme.secondaryContainer;
+          t = "complications";
+        }
+        if (item[1] == 1) {
+          c = Theme.of(context).colorScheme.tertiaryContainer;
+          t = "death";
+        }
+
+        predictRows.value.add(
+          DataRow(
+            cells: List<DataCell>.generate(
+              item.length,
+              (index) => DataCell(
+                AutoSizeText(
+                  index == 1 ? t : item[index].toString(),
+                  minFontSize: 10,
+                ),
+              ),
+            ),
+            color: MaterialStateProperty.resolveWith((states) => c),
+          ),
+        );
+      }
+    }
   }
 }

@@ -10,6 +10,10 @@ class AppColors {
   static const Color spaceCadet = Color(0xFFF4FCFE);
   static const Color darkmetal = Color.fromARGB(255, 16, 37, 51);
 
+  static const Color predictTableLight1 = Color.fromRGBO(105, 240, 174, 1);
+  static const Color predictTableLight2 = Color.fromRGBO(255, 213, 79, 1);
+  static const Color predictTableLight3 = Color.fromRGBO(229, 115, 115, 1);
+
   // Light Theme Colors
   static const Color baby = Color.fromARGB(255, 224, 246, 255);
   static const Color lavender = Color.fromARGB(255, 125, 201, 236);
@@ -17,4 +21,8 @@ class AppColors {
   static const Color spaceBlue = Color(0xFF03254E);
   static const Color dark = Color(0xFF011C27);
   static const Color grey = Color.fromARGB(255, 143, 143, 143);
+
+  static const Color predictTableDark1 = Color.fromRGBO(105, 240, 174, 1);
+  static const Color predictTableDark2 = Color.fromRGBO(255, 143, 0, 1);
+  static const Color predictTableDark3 = Color.fromRGBO(198, 40, 40, 1);
 }
