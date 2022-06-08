@@ -1,8 +1,10 @@
+import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/pages/predict_page.dart';
 import 'package:covidz/pages/settings_page.dart';
 import 'package:covidz/pages/stat_page.dart';
 import 'package:covidz/tools/app_theme.dart';
+import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/tools/theme_controller.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
@@ -52,18 +54,6 @@ class Home extends GetView<MainController> {
           ),
           elevation: 0,
           actions: [
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(4.0, 4.0, 7.0, 4.0),
-                child: Text(
-                  "Profile name",
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
             IconButton(
               onPressed: () {
                 if (Get.isDarkMode) {
@@ -79,7 +69,10 @@ class Home extends GetView<MainController> {
                   : const Icon(Icons.dark_mode_outlined),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                authController.signOut();
+                Get.put(AuthController());
+              },
               icon: const Icon(Icons.logout),
             )
           ],

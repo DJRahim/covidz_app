@@ -208,7 +208,12 @@ class StatPage extends StatelessWidget {
                                         .map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
-                                        child: Text(items),
+                                        child: Text(
+                                          items,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
@@ -255,7 +260,12 @@ class StatPage extends StatelessWidget {
                                     .map((String items) {
                                   return DropdownMenuItem(
                                     value: items,
-                                    child: Text(items),
+                                    child: Text(
+                                      items,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
@@ -273,8 +283,8 @@ class StatPage extends StatelessWidget {
                               ElevatedButton(
                                 onPressed: () async {
                                   Get.snackbar(
-                                    "Laoding",
-                                    "Processing query",
+                                    "Chargement",
+                                    "requête en cours de traitement",
                                     showProgressIndicator: true,
                                     snackPosition: SnackPosition.BOTTOM,
                                     isDismissible: false,

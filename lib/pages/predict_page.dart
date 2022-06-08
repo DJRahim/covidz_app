@@ -161,6 +161,8 @@ class PredictPage extends StatelessWidget {
                                           ],
                                         ),
                                         Visibility(
+                                          visible:
+                                              mainController.growthState.value,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -217,8 +219,6 @@ class PredictPage extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                          visible:
-                                              mainController.growthState.value,
                                         ),
                                         Row(
                                           mainAxisAlignment:
@@ -347,8 +347,8 @@ class PredictPage extends StatelessWidget {
                               ElevatedButton(
                                 onPressed: () async {
                                   Get.snackbar(
-                                    "Laoding",
-                                    "Processing query",
+                                    "Chargement",
+                                    "requête en cours de traitement",
                                     showProgressIndicator: true,
                                     snackPosition: SnackPosition.BOTTOM,
                                     isDismissible: false,
@@ -506,15 +506,19 @@ class PredictPage extends StatelessWidget {
                                         Row(
                                           children: [
                                             const AutoSizeText(
-                                                "Les valeurs a afficher : "),
+                                                "  Les valeurs a afficher : "),
                                             SizedBox(
                                               height: 50,
-                                              width: 180,
+                                              width: 205,
                                               child: CheckboxListTile(
                                                 value: mainController
                                                     .predictListCheckbox1.value,
                                                 title: const AutoSizeText(
-                                                    "few_to_no_symptoms"),
+                                                  "few_to_no_symptoms",
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
                                                 onChanged: (newval) {
                                                   mainController
                                                       .changePredictList(
@@ -531,7 +535,11 @@ class PredictPage extends StatelessWidget {
                                                 value: mainController
                                                     .predictListCheckbox2.value,
                                                 title: const AutoSizeText(
-                                                    "complications"),
+                                                  "complications",
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
                                                 onChanged: (newval) {
                                                   mainController
                                                       .changePredictList(
@@ -547,8 +555,12 @@ class PredictPage extends StatelessWidget {
                                               child: CheckboxListTile(
                                                 value: mainController
                                                     .predictListCheckbox3.value,
-                                                title:
-                                                    const AutoSizeText("death"),
+                                                title: const AutoSizeText(
+                                                  "death",
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
                                                 onChanged: (newval) {
                                                   mainController
                                                       .changePredictList(

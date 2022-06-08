@@ -84,6 +84,8 @@ class MainController extends GetxController {
     "Adaboost",
     "SVM",
     "Naive Bayes",
+    "Linear regression",
+    "Logistic regression",
   ];
 
   final currentPredictModel = "Adaboost".obs;
@@ -136,14 +138,16 @@ class MainController extends GetxController {
   final textFieldController10 = TextEditingController(text: "20");
   final textFieldController11 = TextEditingController(text: "20");
   final textFieldController12 = TextEditingController(text: "60");
+  final textFieldController13 = TextEditingController(text: "");
+  final textFieldController14 = TextEditingController(text: "");
 
   final statVisible1 = false.obs;
   final statVisible2 = false.obs;
   final statVisible3 = false.obs;
-  final datasetVisible1 = false.obs;
+  final datasetVisible1 = true.obs;
   final predictVisible1 = false.obs;
   final predictVisible2 = false.obs;
-  final settingsVisible1 = false.obs;
+  final settingsVisible1 = true.obs;
 
   final sideMenuDisplay = SideMenuDisplayMode.open.obs;
 

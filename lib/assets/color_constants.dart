@@ -22,7 +22,7 @@ class AppColors {
   static const Color dark = Color(0xFF011C27);
   static const Color grey = Color.fromARGB(255, 143, 143, 143);
 
-  static const Color predictTableDark1 = Color.fromRGBO(105, 240, 174, 1);
-  static const Color predictTableDark2 = Color.fromRGBO(255, 143, 0, 1);
-  static const Color predictTableDark3 = Color.fromRGBO(198, 40, 40, 1);
+  static const Color predictTableDark1 = Color.fromARGB(255, 73, 160, 118);
+  static const Color predictTableDark2 = Color.fromARGB(255, 187, 118, 27);
+  static const Color predictTableDark3 = Color.fromARGB(255, 206, 73, 73);
 }

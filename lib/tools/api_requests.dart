@@ -3,14 +3,30 @@ import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DioClient {
   final Dio _dio = Dio();
+  final box = GetStorage();
 
   final _baseUrl = 'http://127.0.0.1:1034/';
 
-  Future<List> getChartData(String route, Map<String, dynamic> args) async {
+  Future<Response> getQuery(String route, Map<String, dynamic> args) async {
+    _dio.options.headers["authorization"] = box.read("token");
+
     Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+    return data;
+  }
+
+  Future<void> getToken(String route, Map<String, dynamic> args) async {
+    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+
+    var token = data.data['token'];
+    box.write("token", token);
+  }
+
+  Future<List> getChartData(String route, Map<String, dynamic> args) async {
+    Response data = await getQuery(route, args);
 
     var list = List<dynamic>.from(data.data);
 
@@ -24,7 +40,7 @@ class DioClient {
   }
 
   Future<List> getProphetData(String route, Map<String, dynamic> args) async {
-    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+    Response data = await getQuery(route, args);
 
     var list = List<dynamic>.from(data.data);
 
@@ -43,7 +59,7 @@ class DioClient {
   }
 
   Future<List> getRowsHeaders(String route, Map<String, dynamic> args) async {
-    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+    Response data = await getQuery(route, args);
 
     var list = List<dynamic>.from(data.data);
 
@@ -82,13 +98,9 @@ class DioClient {
     return [listChart1, listChart2];
   }
 
-  Future<void> getQuery(String route, Map<String, dynamic> args) async {
-    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
-  }
-
   Future<List> getPredictRowsHeaders(String route, Map<String, dynamic> args,
       MainController control, BuildContext context) async {
-    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+    Response data = await getQuery(route, args);
 
     var list = List<dynamic>.from(data.data);
 

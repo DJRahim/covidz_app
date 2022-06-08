@@ -1,18 +1,25 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:covidz/assets/color_constants.dart';
+import 'package:covidz/assets/firebase_auth_constants.dart';
+import 'package:covidz/pages/auth_page.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/home_page.dart';
 import 'package:covidz/pages/predict_page.dart';
 import 'package:covidz/pages/settings_page.dart';
 import 'package:covidz/pages/stat_page.dart';
 import 'package:covidz/tools/app_theme.dart';
+import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/custom_scroll_behaviour.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/tools/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await firebaseInitialization.then((value) {
+    Get.put(AuthController());
+  });
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -43,7 +50,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/settings_page', page: () => SettingsPage()),
       ],
       home: AnimatedSplashScreen(
-        nextScreen: Home(),
+        nextScreen: AuthPage(),
         splash: const Text(
           'COVIDZ',
           style: TextStyle(

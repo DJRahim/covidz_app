@@ -91,7 +91,12 @@ class SettingsPage extends StatelessWidget {
                                 .map((String items) {
                               return DropdownMenuItem(
                                 value: items,
-                                child: Text(items),
+                                child: Text(
+                                  items,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
                               );
                             }).toList(),
                             onChanged: (String? newValue) {
@@ -167,7 +172,7 @@ class SettingsPage extends StatelessWidget {
                                 mainController.standar.value == "Normalisation",
                             replacement: const Text(""),
                             child: ToggleSwitch(
-                              minWidth: 100,
+                              minWidth: 190,
                               initialLabelIndex: 0,
                               totalSwitches: 2,
                               labels: const [
