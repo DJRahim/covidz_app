@@ -6,6 +6,7 @@ import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/widgets/card_main.dart';
 import 'package:covidz/widgets/card_second.dart';
 import 'package:covidz/widgets/dataset_table.dart';
+import 'package:covidz/widgets/pie_chart.dart';
 import 'package:covidz/widgets/prediction_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -497,98 +498,257 @@ class PredictPage extends StatelessWidget {
                           ),
                           Visibility(
                             visible: mainController.predictResult.value,
-                            child: Row(
+                            replacement: Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: TextButton(
+                                onPressed: () {
+                                  mainController.changePredictResult(true);
+                                },
+                                child: Row(
+                                  children: const <Widget>[
+                                    Icon(Icons.arrow_right),
+                                    AutoSizeText("  liste de résultats"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            child: Column(
                               children: [
-                                Expanded(
-                                  child: SecondCard(
-                                    body: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const AutoSizeText(
-                                                "  Les valeurs a afficher : "),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 205,
-                                              child: CheckboxListTile(
-                                                value: mainController
-                                                    .predictListCheckbox1.value,
-                                                title: const AutoSizeText(
-                                                  "few_to_no_symptoms",
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                                onChanged: (newval) {
-                                                  mainController
-                                                      .changePredictList(
-                                                          newval, 0);
-                                                  mainController
-                                                      .updateRows(context);
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 180,
-                                              child: CheckboxListTile(
-                                                value: mainController
-                                                    .predictListCheckbox2.value,
-                                                title: const AutoSizeText(
-                                                  "complications",
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                                onChanged: (newval) {
-                                                  mainController
-                                                      .changePredictList(
-                                                          newval, 1);
-                                                  mainController
-                                                      .updateRows(context);
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 180,
-                                              child: CheckboxListTile(
-                                                value: mainController
-                                                    .predictListCheckbox3.value,
-                                                title: const AutoSizeText(
-                                                  "death",
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                                onChanged: (newval) {
-                                                  mainController
-                                                      .changePredictList(
-                                                          newval, 2);
-                                                  mainController
-                                                      .updateRows(context);
-                                                },
-                                              ),
-                                            ),
+                                SecondCard(
+                                  body: Column(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          mainController
+                                              .changePredictResult(false);
+                                        },
+                                        child: Row(
+                                          children: const <Widget>[
+                                            Icon(Icons.arrow_drop_down),
+                                            AutoSizeText(
+                                                "  liste de résultats"),
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: 700,
-                                          child: SecondCard(
-                                            body: DatasetTable(
-                                              headers: mainController
-                                                  .predictHeaders.value,
-                                              source: DatasetSource(
-                                                  mainController, true),
+                                      ),
+                                      Row(
+                                        children: [
+                                          const AutoSizeText(
+                                              "  Les valeurs a afficher : "),
+                                          SizedBox(
+                                            height: 50,
+                                            width: 205,
+                                            child: CheckboxListTile(
+                                              value: mainController
+                                                  .predictListCheckbox1.value,
+                                              title: const AutoSizeText(
+                                                "few_to_no_symptoms",
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              onChanged: (newval) {
+                                                mainController
+                                                    .changePredictList(
+                                                        newval, 0);
+                                                mainController
+                                                    .updateRows(context);
+                                              },
                                             ),
                                           ),
+                                          SizedBox(
+                                            height: 50,
+                                            width: 180,
+                                            child: CheckboxListTile(
+                                              value: mainController
+                                                  .predictListCheckbox2.value,
+                                              title: const AutoSizeText(
+                                                "complications",
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              onChanged: (newval) {
+                                                mainController
+                                                    .changePredictList(
+                                                        newval, 1);
+                                                mainController
+                                                    .updateRows(context);
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            width: 180,
+                                            child: CheckboxListTile(
+                                              value: mainController
+                                                  .predictListCheckbox3.value,
+                                              title: const AutoSizeText(
+                                                "death",
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              onChanged: (newval) {
+                                                mainController
+                                                    .changePredictList(
+                                                        newval, 2);
+                                                mainController
+                                                    .updateRows(context);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 700,
+                                        child: SecondCard(
+                                          body: DatasetTable(
+                                            headers: mainController
+                                                .predictHeaders.value,
+                                            source: DatasetSource(
+                                                mainController, true),
+                                          ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: mainController.predictResult2.value,
+                            replacement: Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: TextButton(
+                                onPressed: () {
+                                  mainController.changePredictResult2(true);
+                                },
+                                child: Row(
+                                  children: const <Widget>[
+                                    Icon(Icons.arrow_right),
+                                    AutoSizeText("  statistiques"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
                                 SecondCard(
-                                  body: Column(),
+                                  body: Column(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          mainController
+                                              .changePredictResult2(false);
+                                        },
+                                        child: Row(
+                                          children: const <Widget>[
+                                            Icon(Icons.arrow_drop_down),
+                                            AutoSizeText("  statistiques"),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              const Text("variable :  "),
+                                              DropdownButton(
+                                                value: mainController
+                                                    .currentPredictStat.value,
+                                                items: mainController
+                                                    .predictStatsList
+                                                    .map((String items) {
+                                                  return DropdownMenuItem(
+                                                    value: items,
+                                                    child: Text(
+                                                      items,
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  mainController
+                                                      .changePredictStatVariable(
+                                                          newValue);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              const Text(
+                                                  "valeur de prediction :  "),
+                                              DropdownButton(
+                                                value: mainController
+                                                    .currentPredictionVariable
+                                                    .value,
+                                                items: mainController
+                                                    .predictionList
+                                                    .map((String items) {
+                                                  return DropdownMenuItem(
+                                                    value: items,
+                                                    child: Text(
+                                                      items,
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  mainController
+                                                      .changePredictionVariable(
+                                                          newValue);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              var res =
+                                                  await _client.getChartData(
+                                                "predict_stat",
+                                                {
+                                                  "var": mainController
+                                                      .currentPredictStat.value,
+                                                  "predict_value": mainController
+                                                      .currentPredictionVariable
+                                                      .value,
+                                                  "headers": mainController
+                                                      .predictHeadersOld.value,
+                                                  "rows": mainController
+                                                      .predictRowsOld.value,
+                                                },
+                                              );
+                                              mainController
+                                                  .changePredcitData3(res);
+                                            },
+                                            child: const Text("Afficher"),
+                                          ),
+                                        ],
+                                      ),
+                                      PieChart(
+                                        chartData:
+                                            mainController.predictList3.value,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

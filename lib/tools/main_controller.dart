@@ -17,13 +17,14 @@ class MainController extends GetxController {
   final currentStatVariable = "groupe sanguin".obs;
 
   final statValues = [
+    "tout",
     "nombre de deces",
     "nombre de personnees hospitalises",
     "nombre d'entrants en soins intensifs",
   ];
-  final currentStatvalue = "nombre de deces".obs;
+  final currentStatvalue = "tout".obs;
 
-  final currentChronicValue = "nombre de deces".obs;
+  final currentChronicValue = "tout".obs;
 
   final filterstate = false.obs;
 
@@ -36,6 +37,8 @@ class MainController extends GetxController {
   final predictList1 = <ChartData>[].obs;
 
   final predictList2 = <ChartData>[].obs;
+
+  final predictList3 = <ChartData>[].obs;
 
   final country = "DZ".obs;
 
@@ -80,7 +83,8 @@ class MainController extends GetxController {
   final predictModels = [
     "Decision Tree Classifier",
     "Decision Tree Regressor",
-    "Random Forest",
+    "Random Forest Classifier",
+    "Random Forest Regressor",
     "Adaboost",
     "SVM",
     "Naive Bayes",
@@ -112,7 +116,11 @@ class MainController extends GetxController {
 
   final predictRowsOld = [].obs;
 
+  final predictHeadersOld = [].obs;
+
   final predictResult = false.obs;
+
+  final predictResult2 = false.obs;
 
   final predictfeatureSelectionMethods = [
     "Aucune",
@@ -121,6 +129,26 @@ class MainController extends GetxController {
     "Score de Ficher",
     "mutual Info Classifier",
   ];
+
+  final predictStatsList = [
+    "aucune",
+    "age",
+    "sexe",
+    "groupe sanguin",
+    "vaccination",
+    "condition medicale",
+  ];
+
+  final currentPredictStat = "aucune".obs;
+
+  final predictionList = [
+    "tout",
+    "few_to_no_symptoms",
+    "complications",
+    "death",
+  ];
+
+  final currentPredictionVariable = "death".obs;
 
   // Controllers
 
@@ -191,6 +219,10 @@ class MainController extends GetxController {
 
   void changePredcitData2(newval) {
     predictList2.value = newval;
+  }
+
+  void changePredcitData3(newval) {
+    predictList3.value = newval;
   }
 
   void changeCountry(newval) {
@@ -271,7 +303,7 @@ class MainController extends GetxController {
   }
 
   void changeNorm(index) {
-    if (index == 1) {
+    if (index == 0) {
       normToggle.value = "Horizontal";
     } else {
       normToggle.value = "Vertical";
@@ -317,6 +349,10 @@ class MainController extends GetxController {
 
   void changePredictResult(newval) {
     predictResult.value = newval;
+  }
+
+  void changePredictResult2(newval) {
+    predictResult2.value = newval;
   }
 
   void updateRows(BuildContext context) {
@@ -366,5 +402,13 @@ class MainController extends GetxController {
         );
       }
     }
+  }
+
+  void changePredictStatVariable(newval) {
+    currentPredictStat.value = newval;
+  }
+
+  void changePredictionVariable(newval) {
+    currentPredictionVariable.value = newval;
   }
 }

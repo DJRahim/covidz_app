@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -26,7 +28,9 @@ class DioClient {
   }
 
   Future<List> getChartData(String route, Map<String, dynamic> args) async {
-    Response data = await getQuery(route, args);
+    _dio.options.headers["authorization"] = box.read("token");
+
+    Response data = await _dio.post(_baseUrl + route, data: jsonEncode(args));
 
     var list = List<dynamic>.from(data.data);
 
@@ -153,6 +157,7 @@ class DioClient {
     }
 
     control.predictRowsOld.value = list[1];
+    control.predictHeadersOld.value = list[0];
 
     return [listChart1, listChart2];
   }
