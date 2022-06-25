@@ -299,6 +299,13 @@ class StatPage extends StatelessWidget {
                                           .textFieldController8.text,
                                       "variable": mainController
                                           .currentVariableCible.value,
+                                      "standarisation":
+                                          mainController.standar.value ==
+                                              "Standarisation",
+                                      "normalisation":
+                                          mainController.standar.value !=
+                                              "Standarisation",
+                                      "axis": mainController.normToggle.value,
                                     },
                                   );
                                   Get.closeAllSnackbars();

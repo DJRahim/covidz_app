@@ -1,7 +1,9 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/home_page.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
@@ -19,11 +21,29 @@ class AuthController extends GetxController {
   }
 
   _setInitialScreen(User? user) {
+    var page;
     if (user == null) {
-      Get.offAll(() => AuthPage());
+      page = AuthPage();
     } else {
-      Get.offAll(() => Home());
+      page = Home();
     }
+    Get.offAll(
+      () => AnimatedSplashScreen(
+        nextScreen: page,
+        splash: const Text(
+          'COVIDZ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 50.0,
+            color: Color.fromARGB(255, 17, 70, 105),
+          ),
+        ),
+        splashTransition: SplashTransition.fadeTransition,
+        animationDuration: const Duration(milliseconds: 1500),
+        duration: 2000,
+        backgroundColor: Colors.white,
+      ),
+    );
   }
 
   void register(String email, password) async {

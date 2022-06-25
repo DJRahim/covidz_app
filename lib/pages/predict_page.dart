@@ -439,7 +439,8 @@ class PredictPage extends StatelessWidget {
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.all(4.0),
-                                    child: AutoSizeText("Dataset de test : "),
+                                    child: AutoSizeText(
+                                        "Dataset de prediction : "),
                                   ),
                                   DropdownButton(
                                     value:

@@ -48,22 +48,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/stat_page', page: () => StatPage()),
         GetPage(name: '/predict_page', page: () => PredictPage()),
         GetPage(name: '/settings_page', page: () => SettingsPage()),
+        GetPage(name: '/auth', page: () => AuthPage()),
       ],
-      home: AnimatedSplashScreen(
-        nextScreen: AuthPage(),
-        splash: const Text(
-          'COVIDZ',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 50.0,
-            color: Color.fromARGB(255, 17, 70, 105),
-          ),
-        ),
-        splashTransition: SplashTransition.fadeTransition,
-        animationDuration: const Duration(milliseconds: 1500),
-        duration: 2000,
-        backgroundColor: Colors.white,
-      ),
+      home: AuthPage(),
     );
   }
 }

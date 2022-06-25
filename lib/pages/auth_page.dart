@@ -5,11 +5,13 @@ import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/tools/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthPage extends GetView<MainController> {
   AuthPage({Key? key}) : super(key: key);
   final themeController = Get.find<ThemeController>();
   final DioClient _client = DioClient();
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class AuthPage extends GetView<MainController> {
                       ),
                     ),
                     contentPadding: EdgeInsets.all(2.0),
-                    labelText: "email"),
+                    labelText: "  email"),
                 keyboardType: TextInputType.emailAddress,
               ),
             ),
@@ -65,7 +67,7 @@ class AuthPage extends GetView<MainController> {
                       ),
                     ),
                     contentPadding: EdgeInsets.all(2.0),
-                    labelText: "mot de passe"),
+                    labelText: "  mot de passe"),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
               ),
@@ -78,13 +80,15 @@ class AuthPage extends GetView<MainController> {
                   controller.textFieldController14.text.trim(),
                 );
                 if (res[0] == 'success') {
-                  _client.getToken(
-                    "token",
-                    {
-                      "email": controller.textFieldController13.text.trim(),
-                      "password": controller.textFieldController14.text.trim(),
-                    },
+                  box.write(
+                    "email",
+                    controller.textFieldController13.text.trim(),
                   );
+                  box.write(
+                    "passwd",
+                    controller.textFieldController14.text.trim(),
+                  );
+                  await _client.getToken();
                   Get.put(AuthController());
                 } else {
                   Get.snackbar(

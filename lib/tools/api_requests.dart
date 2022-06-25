@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -14,14 +13,24 @@ class DioClient {
   final _baseUrl = 'http://127.0.0.1:1034/';
 
   Future<Response> getQuery(String route, Map<String, dynamic> args) async {
+    await getToken();
     _dio.options.headers["authorization"] = box.read("token");
 
     Response data = await _dio.get(_baseUrl + route, queryParameters: args);
     return data;
   }
 
-  Future<void> getToken(String route, Map<String, dynamic> args) async {
-    Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+  Future<void> getToken() async {
+    var email = box.read("email");
+    var passwd = box.read("passwd");
+
+    Response data = await _dio.get(
+      "${_baseUrl}token",
+      queryParameters: {
+        "email": email,
+        "password": passwd,
+      },
+    );
 
     var token = data.data['token'];
     box.write("token", token);
