@@ -10,8 +10,8 @@ class MainController extends GetxController {
   static MainController get to => Get.find();
 
   // Variables
-  final datasets = ["Donnees du formulaire", "Our World In Data (OWID)"];
-  final currentDataset = "Donnees du formulaire".obs;
+  final datasets = ["Dataset d'enquete", "Our World In Data (OWID)"].obs;
+  final currentDataset = "Dataset d'enquete".obs;
 
   final statVariables = ["age", "sexe", "groupe sanguin"];
   final currentStatVariable = "groupe sanguin".obs;
@@ -410,5 +410,9 @@ class MainController extends GetxController {
 
   void changePredictionVariable(newval) {
     currentPredictionVariable.value = newval;
+  }
+
+  void updateDatasets(newval) {
+    datasets.value = newval;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/home_page.dart';
+import 'package:covidz/home_page_new.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class AuthController extends GetxController {
     if (user == null) {
       page = AuthPage();
     } else {
-      page = Home();
+      page = HomeNew();
     }
     Get.offAll(
       () => AnimatedSplashScreen(
@@ -64,6 +65,23 @@ class AuthController extends GetxController {
       if (e.code == 'wrong-password') {
         res.add('mot de pass incorrect.');
       } else if (e.code == 'invalid-email') {
+        res.add('email invalide.');
+      } else if (e.code == 'user-not-found') {
+        res.add("utilisateur n'existe pas.");
+      }
+    }
+    return res;
+  }
+
+  Future<List> resetPassword(String email) async {
+    var res = [];
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      res.add('success');
+      res.add('Verifier votre email.');
+    } on FirebaseAuthException catch (e) {
+      res.add('fail');
+      if (e.code == 'invalid-email') {
         res.add('email invalide.');
       } else if (e.code == 'user-not-found') {
         res.add("utilisateur n'existe pas.");

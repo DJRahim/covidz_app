@@ -3,9 +3,9 @@ import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/home_page.dart';
-import 'package:covidz/pages/predict_page.dart';
+import 'package:covidz/pages/predict_page1.dart';
 import 'package:covidz/pages/settings_page.dart';
-import 'package:covidz/pages/stat_page.dart';
+import 'package:covidz/pages/stat_page1.dart';
 import 'package:covidz/tools/app_theme.dart';
 import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/custom_scroll_behaviour.dart';
@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
           page: () => Home(),
         ),
         GetPage(name: '/datasets_page', page: () => DatasetPage()),
-        GetPage(name: '/stat_page', page: () => StatPage()),
-        GetPage(name: '/predict_page', page: () => PredictPage()),
+        GetPage(name: '/stat_page', page: () => StatPage1()),
+        GetPage(name: '/predict_page', page: () => PredictPage1()),
         GetPage(name: '/settings_page', page: () => SettingsPage()),
         GetPage(name: '/auth', page: () => AuthPage()),
       ],

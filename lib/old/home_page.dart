@@ -1,8 +1,8 @@
 import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/pages/dataset_page.dart';
-import 'package:covidz/pages/predict_page.dart';
+import 'package:covidz/pages/predict_page1.dart';
 import 'package:covidz/pages/settings_page.dart';
-import 'package:covidz/pages/stat_page.dart';
+import 'package:covidz/pages/stat_page1.dart';
 import 'package:covidz/tools/app_theme.dart';
 import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -18,8 +18,8 @@ class Home extends GetView<MainController> {
 
   final List<Widget> views = [
     DatasetPage(),
-    StatPage(),
-    PredictPage(),
+    StatPage1(),
+    PredictPage1(),
     SettingsPage()
   ];
 

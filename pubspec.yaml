@@ -48,12 +48,16 @@ dependencies:
   data_table_2: ^2.2.3
   toggle_switch: ^2.0.1
   animated_splash_screen: ^1.2.0
+  file_picker: ^4.6.1
+  flutter_admin_scaffold: ^1.1.1
+
 
   firebase_core: ^1.17.1
   firebase_auth: ^3.3.19
   firebase_core_desktop: ^1.0.0
   firebase_auth_desktop: ^1.0.0
   desktop_webview_auth: ^0.0.9
+  firebase_storage: ^10.2.18
 
 dev_dependencies:
   flutter_test:

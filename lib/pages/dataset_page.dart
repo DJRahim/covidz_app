@@ -1,14 +1,19 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:io';
+
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/dataset_source.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/widgets/card_main.dart';
 import 'package:covidz/widgets/card_second.dart';
 import 'package:covidz/widgets/dataset_table.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DatasetPage extends StatelessWidget {
@@ -16,6 +21,8 @@ class DatasetPage extends StatelessWidget {
   final mainController = Get.find<MainController>();
   final _url = Uri.parse("https://forms.gle/pZqRVXpq2qVThSby8");
   final DioClient _client = DioClient();
+  final _firebaseStorage = FirebaseStorage.instance;
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +95,34 @@ class DatasetPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles(
+                                    type: FileType.custom,
+                                    allowedExtensions: ['csv'],
+                                  );
+
+                                  String? f = result?.files.single.path;
+
+                                  if (result != null) {
+                                    File file = File(f!);
+
+                                    var snapshot = await _firebaseStorage
+                                        .ref()
+                                        .child('images/imageName')
+                                        .putFile(file);
+                                    var downloadUrl =
+                                        await snapshot.ref.getDownloadURL();
+                                    // Save it in get_storage
+                                    var list = box.read("datasets");
+                                    list.add(downloadUrl);
+                                    box.write("datasets", list);
+                                    mainController.updateDatasets(list);
+                                  }
+                                },
+                                child: const Text("Ajouter un dataset"),
+                              ),
                               ElevatedButton(
                                 onPressed: () {
                                   _client.getQuery("refresh_dataset", {

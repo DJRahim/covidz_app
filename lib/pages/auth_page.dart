@@ -101,6 +101,39 @@ class AuthPage extends GetView<MainController> {
               },
               child: const Text("Se connecter"),
             ),
+            const SizedBox(height: 30),
+            TextButton(
+              onPressed: () async {
+                if (controller.textFieldController13.text.trim() == "") {
+                  Get.snackbar(
+                    "Erreur d'authentification",
+                    "email invalide.",
+                    snackPosition: SnackPosition.BOTTOM,
+                    isDismissible: true,
+                  );
+                } else {
+                  List res = await authController.resetPassword(
+                    controller.textFieldController13.text.trim(),
+                  );
+                  if (res[0] == 'success') {
+                    Get.snackbar(
+                      "Reinitialisation du mot de passe",
+                      res[1],
+                      snackPosition: SnackPosition.BOTTOM,
+                      isDismissible: true,
+                    );
+                  } else {
+                    Get.snackbar(
+                      "Erreur d'authentification",
+                      res[1],
+                      snackPosition: SnackPosition.BOTTOM,
+                      isDismissible: true,
+                    );
+                  }
+                }
+              },
+              child: Text("Mot de passe oublié ?"),
+            ),
             const SizedBox(height: 150),
           ],
         ),
