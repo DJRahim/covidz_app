@@ -170,4 +170,8 @@ class DioClient {
 
     return [listChart1, listChart2];
   }
+
+  Future<List> signup(String route, Map<String, dynamic> args) async {
+    return [];
+  }
 }

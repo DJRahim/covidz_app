@@ -104,8 +104,48 @@ class StatPage1 extends StatelessWidget {
                       ),
                     ),
                     SecondCard(
-                      body: PieChart(
-                        chartData: mainController.statList1.value,
+                      body: Row(
+                        children: [
+                          SfCartesianChart(
+                            series: <BoxAndWhiskerSeries<BoxPlotData, dynamic>>[
+                              BoxAndWhiskerSeries<BoxPlotData, dynamic>(
+                                  dataSource: <BoxPlotData>[
+                                    BoxPlotData(
+                                      'BoxPlot',
+                                      [
+                                        0.0,
+                                        4.0,
+                                        10.0,
+                                        3.0,
+                                        22.0,
+                                        22.0,
+                                        23.0,
+                                        25.0,
+                                        25.0,
+                                        25.0,
+                                        26.0,
+                                        27.0,
+                                        27.0
+                                      ],
+                                    ),
+                                  ],
+                                  xValueMapper: (BoxPlotData data, _) => data.x,
+                                  yValueMapper: (BoxPlotData data, _) =>
+                                      data.y),
+                            ],
+                            primaryXAxis: CategoryAxis(
+                                majorGridLines: const MajorGridLines(width: 0),
+                                labelIntersectAction:
+                                    AxisLabelIntersectAction.rotate45),
+                            primaryYAxis: NumericAxis(
+                                name: 'Age',
+                                axisLine: const AxisLine(width: 0),
+                                majorTickLines: const MajorTickLines(size: 0)),
+                          ),
+                          PieChart(
+                            chartData: mainController.statList1.value,
+                          ),
+                        ],
                       ),
                     ),
                   ],

@@ -1,8 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:covidz/assets/firebase_auth_constants.dart';
+import 'package:covidz/home_page_new.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:covidz/pages/dataset_page.dart';
-import 'package:covidz/home_page.dart';
 import 'package:covidz/pages/predict_page1.dart';
 import 'package:covidz/pages/settings_page.dart';
 import 'package:covidz/pages/stat_page1.dart';
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
-          page: () => Home(),
+          page: () => HomeNew(),
         ),
         GetPage(name: '/datasets_page', page: () => DatasetPage()),
         GetPage(name: '/stat_page', page: () => StatPage1()),

@@ -2,7 +2,6 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/classes.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -158,7 +157,7 @@ class MainController extends GetxController {
   final textFieldController2 = TextEditingController(text: "0.8");
   final textFieldController3 = TextEditingController(text: "0.05");
   final textFieldController4 = TextEditingController(text: "0");
-  final textFieldController5 = TextEditingController(text: "100");
+  var textFieldController5 = TextEditingController(text: "100");
   final textFieldController6 = TextEditingController(text: "2600");
   final textFieldController7 = TextEditingController(text: "0");
   final textFieldController8 = TextEditingController(text: "20");
@@ -168,6 +167,9 @@ class MainController extends GetxController {
   final textFieldController12 = TextEditingController(text: "60");
   final textFieldController13 = TextEditingController(text: "");
   final textFieldController14 = TextEditingController(text: "");
+  final textFieldController15 = TextEditingController(text: "");
+  final textFieldController16 = TextEditingController(text: "");
+  final textFieldController17 = TextEditingController(text: "");
 
   final statVisible1 = false.obs;
   final statVisible2 = false.obs;
@@ -176,8 +178,7 @@ class MainController extends GetxController {
   final predictVisible1 = false.obs;
   final predictVisible2 = false.obs;
   final settingsVisible1 = true.obs;
-
-  final sideMenuDisplay = SideMenuDisplayMode.open.obs;
+  final rowNumberVis = false.obs;
 
   // Functions
 
@@ -250,40 +251,12 @@ class MainController extends GetxController {
     minWidth.value = newval;
   }
 
-  void statVisibleFunc1(vis) {
-    statVisible1.value = !vis;
-  }
-
-  void statVisibleFunc2(vis) {
-    statVisible2.value = !vis;
-  }
-
-  void statVisibleFunc3(vis) {
-    statVisible3.value = !vis;
-  }
-
   void datasetVisibleFunc1(vis) {
     datasetVisible1.value = !vis;
   }
 
-  void predictVisibleFunc1(vis) {
-    predictVisible1.value = !vis;
-  }
-
-  void predictVisibleFunc2(vis) {
-    predictVisible2.value = !vis;
-  }
-
   void settingsVisibleFunc1(vis) {
     settingsVisible1.value = !vis;
-  }
-
-  void changeSideMenuDisplay() {
-    if (sideMenuDisplay.value == SideMenuDisplayMode.open) {
-      sideMenuDisplay.value = SideMenuDisplayMode.compact;
-    } else {
-      sideMenuDisplay.value = SideMenuDisplayMode.open;
-    }
   }
 
   void changeFeatureSelection(newval) {
@@ -414,5 +387,10 @@ class MainController extends GetxController {
 
   void updateDatasets(newval) {
     datasets.value = newval;
+  }
+
+  void changeRowNumberVis(newval) {
+    rowNumberVis.value = newval;
+    textFieldController5 = TextEditingController(text: "0");
   }
 }

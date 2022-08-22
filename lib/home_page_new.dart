@@ -23,10 +23,10 @@ class HomeNew extends GetView<MainController> {
     DatasetPage(),
     StatPage1(),
     StatPage2(),
-    StatPage3(),
+    // StatPage3(),
     PredictPage1(),
     PredictPage2(),
-    SettingsPage()
+    SettingsPage(),
   ];
 
   @override
@@ -38,9 +38,7 @@ class HomeNew extends GetView<MainController> {
             Icons.menu,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
-          onPressed: () {
-            controller.changeSideMenuDisplay();
-          },
+          onPressed: () {},
         ),
         title: Row(
           children: const [
@@ -107,10 +105,10 @@ class HomeNew extends GetView<MainController> {
                 title: 'Maladies chroniques',
                 route: 'StatPage2',
               ),
-              AdminMenuItem(
-                title: 'Comportement',
-                route: 'StatPage3',
-              ),
+              // AdminMenuItem(
+              //   title: 'Les facteurs les plus pertinents',
+              //   route: 'StatPage3',
+              // ),
             ],
           ),
           AdminMenuItem(
@@ -133,29 +131,29 @@ class HomeNew extends GetView<MainController> {
             icon: Icons.settings,
           ),
         ],
-        selectedRoute: 'DatasetPage',
+        selectedRoute: '/',
         onSelected: (item) {
           if (item.route != null) {
             if (item.route == "DatasetPage") {
-              controller.page.jumpToPage(1);
+              controller.page.jumpToPage(0);
             }
             if (item.route == "StatPage1") {
-              controller.page.jumpToPage(2);
+              controller.page.jumpToPage(1);
             }
             if (item.route == "StatPage2") {
+              controller.page.jumpToPage(2);
+            }
+            // if (item.route == "StatPage3") {
+            //   controller.page.jumpToPage(3);
+            // }
+            if (item.route == "PredictPage1") {
               controller.page.jumpToPage(3);
             }
-            if (item.route == "StatPage3") {
+            if (item.route == "PredictPage2") {
               controller.page.jumpToPage(4);
             }
-            if (item.route == "PredictPage1") {
-              controller.page.jumpToPage(5);
-            }
-            if (item.route == "PredictPage2") {
-              controller.page.jumpToPage(6);
-            }
             if (item.route == "Settings") {
-              controller.page.jumpToPage(7);
+              controller.page.jumpToPage(5);
             }
           }
         },

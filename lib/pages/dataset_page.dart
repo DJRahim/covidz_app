@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'dart:io';
-
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/dataset_source.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -32,12 +31,7 @@ class DatasetPage extends StatelessWidget {
         child: Column(
           children: [
             Obx(
-              () => MainCard(
-                ontap: (vis) {
-                  mainController.datasetVisibleFunc1(vis);
-                },
-                vis: mainController.datasetVisible1.value,
-                title: "Datasets",
+              () => SecondCard(
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -69,13 +63,31 @@ class DatasetPage extends StatelessWidget {
                                 ],
                               ),
                               Row(
+                                children: [
+                                  Checkbox(
+                                    value: mainController.rowNumberVis.value,
+                                    onChanged: (val) {
+                                      mainController.changeRowNumberVis(val);
+                                    },
+                                  ),
+                                  const Text(
+                                      "Afficher un nombre limite de lignes"),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: mainController.rowNumberVis.value,
+                            child: SizedBox(
+                              height: 25.0,
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Text("Nombre de lignes a afficher :  "),
                                   SizedBox(
                                     width: 50.0,
-                                    height: 10.0,
+                                    height: 15.0,
                                     child: TextField(
                                       controller:
                                           mainController.textFieldController5,
@@ -89,7 +101,7 @@ class DatasetPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
                           // Buttons
                           Row(

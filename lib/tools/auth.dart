@@ -1,6 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:covidz/assets/firebase_auth_constants.dart';
-import 'package:covidz/home_page.dart';
 import 'package:covidz/home_page_new.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
