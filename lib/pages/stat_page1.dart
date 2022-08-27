@@ -36,7 +36,7 @@ class StatPage1 extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Text("variable :  "),
+                                  const Text("Variable cible   :  "),
                                   DropdownButton(
                                     value: mainController
                                         .currentStatVariable.value,
@@ -60,7 +60,7 @@ class StatPage1 extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Text("valeur :  "),
+                                  const Text("Critere   :  "),
                                   DropdownButton(
                                     value:
                                         mainController.currentStatvalue.value,

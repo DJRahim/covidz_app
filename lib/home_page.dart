@@ -2,7 +2,7 @@ import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/pages/predict_page1.dart';
 import 'package:covidz/pages/predict_page2.dart';
-import 'package:covidz/pages/settings_page.dart';
+import 'package:covidz/old/settings_page.dart';
 import 'package:covidz/pages/stat_page1.dart';
 import 'package:covidz/pages/stat_page2.dart';
 import 'package:covidz/pages/stat_page3.dart';
@@ -81,7 +81,9 @@ class HomeNew extends GetView<MainController> {
         ],
       ),
       sideBar: SideBar(
-        backgroundColor: (Theme.of(context).appBarTheme.backgroundColor)!,
+        backgroundColor: Get.isDarkMode
+            ? const Color.fromARGB(255, 16, 37, 51)
+            : const Color.fromARGB(255, 130, 179, 202),
         activeBackgroundColor: Theme.of(context).selectedRowColor,
         textStyle: (Theme.of(context).appBarTheme.titleTextStyle)!,
         activeTextStyle: (Theme.of(context).appBarTheme.titleTextStyle)!,

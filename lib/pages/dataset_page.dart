@@ -68,6 +68,10 @@ class DatasetPage extends StatelessWidget {
                                     value: mainController.rowNumberVis.value,
                                     onChanged: (val) {
                                       mainController.changeRowNumberVis(val);
+                                      if (val == false) {
+                                        mainController.textFieldController5 =
+                                            TextEditingController(text: "0");
+                                      }
                                     },
                                   ),
                                   const Text(

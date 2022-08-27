@@ -10,7 +10,7 @@ class DioClient {
   final Dio _dio = Dio();
   final box = GetStorage();
 
-  final _baseUrl = 'http://127.0.0.1:1034/';
+  final _baseUrl = 'http://127.0.0.1:1035/';
 
   Future<Response> getQuery(String route, Map<String, dynamic> args) async {
     await getToken();
@@ -20,20 +20,30 @@ class DioClient {
     return data;
   }
 
-  Future<void> getToken() async {
+  Future<String> getToken() async {
     var email = box.read("email");
     var passwd = box.read("passwd");
 
-    Response data = await _dio.get(
-      "${_baseUrl}token",
-      queryParameters: {
-        "email": email,
-        "password": passwd,
-      },
-    );
+    try {
+      Response data = await _dio.get(
+        "${_baseUrl}token",
+        queryParameters: {
+          "email": email,
+          "password": passwd,
+        },
+      );
 
-    var token = data.data['token'];
-    box.write("token", token);
+      var token = data.data['token'];
+      box.write("token", token);
+
+      var user_type = data.data['user_type'];
+      print(user_type);
+      box.write("user_type", user_type);
+      return "succes";
+    } on Exception catch (e) {
+      print("error");
+      return "error";
+    }
   }
 
   Future<List> getChartData(String route, Map<String, dynamic> args) async {
@@ -172,6 +182,35 @@ class DioClient {
   }
 
   Future<List> signup(String route, Map<String, dynamic> args) async {
-    return [];
+    var list;
+    try {
+      Response data = await _dio.get(_baseUrl + route, queryParameters: args);
+      list = List<dynamic>.from(data.data);
+    } on Exception catch (e) {
+      list = [
+        {'message': 'Demande déjà existante'},
+        400,
+      ];
+    }
+
+    return list;
+  }
+
+  // Admin Functions
+  Future<List> getUsersList(String route, Map<String, dynamic> args) async {
+    Response data = await getQuery(route, args);
+
+    var list = List.from(data.data);
+
+    return list;
+  }
+
+  Future<List> acceptRejectRequest(
+      String route, Map<String, dynamic> args) async {
+    Response data = await getQuery(route, args);
+
+    var list = List<dynamic>.from(data.data);
+
+    return list;
   }
 }

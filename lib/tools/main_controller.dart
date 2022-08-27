@@ -1,12 +1,14 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController {
   static MainController get to => Get.find();
+  final DioClient _client = DioClient();
 
   // Variables
   final datasets = ["Dataset d'enquete", "Our World In Data (OWID)"].obs;
@@ -91,11 +93,26 @@ class MainController extends GetxController {
     "Logistic regression",
   ];
 
+  final predictModelsClasses = [
+    "Supervised Learning - Multiclass Classification",
+    "Supervised Learning - Regression",
+    "Ensemble Learning - Multiclass Classification",
+    "Ensemble Learning - Regression",
+    "Ensemble Learning - Classification and Regression",
+    "Supervised Learning - Classification and Regression",
+    "Probabilistic Supervised learning - Multiclass Classification",
+    "Supervised Learning - Regression",
+    "Supervised Learning - Regression",
+  ];
+
   final currentPredictModel = "Adaboost".obs;
+
+  final currentPredictModelClass =
+      "Ensemble Learning - Classification and Regression".obs;
 
   final predictFeatureSelect = "FeatureWiz".obs;
 
-  final predictDatasets = ["formulaire"];
+  final predictDatasets = ["formulaire", "Dataset genere"];
 
   final predictTrainDataset = "formulaire".obs;
 
@@ -149,6 +166,10 @@ class MainController extends GetxController {
 
   final currentPredictionVariable = "death".obs;
 
+  final usersList = [].obs;
+
+  final usersList2 = [].obs;
+
   // Controllers
 
   final PageController page = PageController();
@@ -165,11 +186,11 @@ class MainController extends GetxController {
   final textFieldController10 = TextEditingController(text: "20");
   final textFieldController11 = TextEditingController(text: "20");
   final textFieldController12 = TextEditingController(text: "60");
-  final textFieldController13 = TextEditingController(text: "");
-  final textFieldController14 = TextEditingController(text: "");
-  final textFieldController15 = TextEditingController(text: "");
-  final textFieldController16 = TextEditingController(text: "");
-  final textFieldController17 = TextEditingController(text: "");
+  var textFieldController13 = TextEditingController(text: "");
+  var textFieldController14 = TextEditingController(text: "");
+  var textFieldController15 = TextEditingController(text: "");
+  var textFieldController16 = TextEditingController(text: "");
+  var textFieldController17 = TextEditingController(text: "");
 
   final statVisible1 = false.obs;
   final statVisible2 = false.obs;
@@ -179,6 +200,8 @@ class MainController extends GetxController {
   final predictVisible2 = false.obs;
   final settingsVisible1 = true.obs;
   final rowNumberVis = false.obs;
+  final settingsPredict = false.obs;
+  final predictPerformance = false.obs;
 
   // Functions
 
@@ -287,6 +310,11 @@ class MainController extends GetxController {
     currentPredictModel.value = newval;
   }
 
+  void changePredictModelClass(newval) {
+    currentPredictModelClass.value =
+        predictModelsClasses[predictModels.indexOf(newval)];
+  }
+
   void changePredictFeatureSelect(newval) {
     predictFeatureSelect.value = newval;
   }
@@ -392,5 +420,29 @@ class MainController extends GetxController {
   void changeRowNumberVis(newval) {
     rowNumberVis.value = newval;
     textFieldController5 = TextEditingController(text: "0");
+  }
+
+  void changeSettingsPredict(newval) {
+    settingsPredict.value = newval;
+  }
+
+  void changePredictPerformance(newval) {
+    predictPerformance.value = newval;
+  }
+
+  void getUsersList() async {
+    usersList.value = await _client.getUsersList("user_requests", {});
+  }
+
+  void getUsersList2() async {
+    usersList2.value = await _client.getUsersList("user_list", {});
+  }
+
+  void resetAuthPage() {
+    textFieldController13 = TextEditingController(text: "");
+    textFieldController14 = TextEditingController(text: "");
+    textFieldController15 = TextEditingController(text: "");
+    textFieldController16 = TextEditingController(text: "");
+    textFieldController17 = TextEditingController(text: "");
   }
 }

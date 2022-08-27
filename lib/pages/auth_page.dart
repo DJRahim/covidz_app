@@ -43,10 +43,14 @@ class AuthPage extends GetView<MainController> {
               SizedBox(
                 width: Get.width * 0.35,
                 height: 50.0,
-                child: const TabBar(tabs: [
-                  Tab(text: "Connexion"),
-                  Tab(text: "Inscription"),
-                ]),
+                child: const TabBar(
+                  tabs: [
+                    Tab(text: "Connexion"),
+                    Tab(text: "Inscription"),
+                  ],
+                  labelColor: Color.fromARGB(255, 0, 0, 0),
+                  unselectedLabelColor: Color.fromARGB(255, 0, 0, 0),
+                ),
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -108,8 +112,18 @@ class AuthPage extends GetView<MainController> {
                                 "passwd",
                                 controller.textFieldController14.text.trim(),
                               );
-                              await _client.getToken();
-                              Get.put(AuthController());
+                              String res = await _client.getToken();
+                              if (res == "success") {
+                                controller.resetAuthPage();
+                                Get.put(AuthController());
+                              } else {
+                                Get.snackbar(
+                                  "Erreur d'authentification",
+                                  "probleme de generation du token",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  isDismissible: true,
+                                );
+                              }
                             } else {
                               Get.snackbar(
                                 "Erreur d'authentification",
@@ -215,7 +229,7 @@ class AuthPage extends GetView<MainController> {
                         const SizedBox(height: 43),
                         ElevatedButton(
                           onPressed: () async {
-                            var res = await _client.signup(
+                            List res = await _client.signup(
                               "signup",
                               {
                                 "name": controller.textFieldController15.text
@@ -226,7 +240,7 @@ class AuthPage extends GetView<MainController> {
                                     .trim(),
                               },
                             );
-                            if (res[0] == 'success') {
+                            if (res[1] == 200) {
                               Get.snackbar(
                                 "Demande d'inscription envoyée",
                                 "Verifier votre email pour un message de confirmation",
@@ -236,7 +250,7 @@ class AuthPage extends GetView<MainController> {
                             } else {
                               Get.snackbar(
                                 "Erreur d'inscription",
-                                "res[1]",
+                                res[0]["message"],
                                 snackPosition: SnackPosition.BOTTOM,
                                 isDismissible: true,
                               );

@@ -1,14 +1,17 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:covidz/assets/firebase_auth_constants.dart';
-import 'package:covidz/home_page_new.dart';
+import 'package:covidz/home_page.dart';
+import 'package:covidz/home_page_admin.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> firebaseUser;
+  final box = GetStorage();
 
   @override
   void onReady() {
@@ -25,7 +28,12 @@ class AuthController extends GetxController {
     if (user == null) {
       page = AuthPage();
     } else {
-      page = HomeNew();
+      var type = box.read("user_type");
+      if (type == "normal") {
+        page = HomeNew();
+      } else {
+        page = HomeAdmin();
+      }
     }
     Get.offAll(
       () => AnimatedSplashScreen(
