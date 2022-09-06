@@ -4,10 +4,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PieChart extends StatelessWidget {
   final List<ChartData> chartData;
+  final ChartTitle title;
 
   const PieChart({
     Key? key,
     required this.chartData,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class PieChart extends StatelessWidget {
             isVisible: true,
             position: LegendPosition.right,
           ),
+          title: title,
         ),
       ),
     );

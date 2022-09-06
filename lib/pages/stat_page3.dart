@@ -1,9 +1,7 @@
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/main_controller.dart';
-import 'package:covidz/widgets/card_main.dart';
 import 'package:covidz/widgets/card_second.dart';
-import 'package:covidz/widgets/pie_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -127,7 +125,7 @@ class StatPage3 extends StatelessWidget {
                                     isDismissible: false,
                                     duration: const Duration(hours: 1),
                                   );
-                                  var res = await _client.getChartData(
+                                  var res = await _client.getChartDataFeatures(
                                     "feature_selection",
                                     {
                                       "method": mainController

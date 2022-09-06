@@ -1,14 +1,16 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/main_controller.dart';
 import 'package:covidz/widgets/card_second.dart';
 import 'package:covidz/widgets/pie_chart.dart';
+import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class StatPage1 extends StatelessWidget {
-  StatPage1({Key? key}) : super(key: key);
+class StatPage4 extends StatelessWidget {
+  StatPage4({Key? key}) : super(key: key);
   final mainController = Get.find<MainController>();
   final DioClient _client = DioClient();
 
@@ -36,9 +38,8 @@ class StatPage1 extends StatelessWidget {
                                 children: [
                                   const Text("Variable cible   :  "),
                                   DropdownButton(
-                                    value: mainController
-                                        .currentStatVariable.value,
-                                    items: mainController.statVariables
+                                    value: mainController.currentCompVar.value,
+                                    items: mainController.compVariables
                                         .map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
@@ -47,9 +48,7 @@ class StatPage1 extends StatelessWidget {
                                     }).toList(),
                                     onChanged: (String? newValue) {
                                       mainController
-                                          .changeStatVariable(newValue);
-                                      // API Call
-                                      // Change table
+                                          .changeCompVariable(newValue);
                                     },
                                   ),
                                 ],
@@ -61,7 +60,7 @@ class StatPage1 extends StatelessWidget {
                                   const Text("Critere   :  "),
                                   DropdownButton(
                                     value:
-                                        mainController.currentStatvalue.value,
+                                        mainController.currentCompValue.value,
                                     items: mainController.statValues
                                         .map((String items) {
                                       return DropdownMenuItem(
@@ -70,9 +69,7 @@ class StatPage1 extends StatelessWidget {
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
-                                      mainController.changeStatValue(newValue);
-                                      // API Call
-                                      // Change table
+                                      mainController.changeCompValue(newValue);
                                     },
                                   ),
                                 ],
@@ -85,14 +82,16 @@ class StatPage1 extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () async {
-                                  var res =
-                                      await _client.getChartData("first_stat", {
-                                    "var": mainController
-                                        .currentStatVariable.value,
-                                    "val":
-                                        mainController.currentStatvalue.value,
-                                  });
-                                  mainController.changeStatData1(res);
+                                  var res = await _client.getChartData(
+                                    "stat_comp",
+                                    {
+                                      "var":
+                                          mainController.currentCompVar.value,
+                                      "val":
+                                          mainController.currentCompValue.value,
+                                    },
+                                  );
+                                  mainController.changeCompData(res);
                                 },
                                 child: const Text("Afficher"),
                               ),
@@ -113,7 +112,7 @@ class StatPage1 extends StatelessWidget {
                               series: <
                                   BoxAndWhiskerSeries<BoxPlotData, dynamic>>[
                                 BoxAndWhiskerSeries<BoxPlotData, dynamic>(
-                                  dataSource: mainController.statList1_2.value,
+                                  dataSource: mainController.compList2.value,
                                   xValueMapper: (BoxPlotData data, _) => data.x,
                                   yValueMapper: (BoxPlotData data, _) => data.y,
                                 ),
@@ -135,7 +134,7 @@ class StatPage1 extends StatelessWidget {
                             ),
                           ),
                           PieChart(
-                            chartData: mainController.statList1.value,
+                            chartData: mainController.compList.value,
                             title: ChartTitle(
                               alignment: ChartAlignment.center,
                               textStyle: const TextStyle(fontSize: 13),
@@ -150,6 +149,68 @@ class StatPage1 extends StatelessWidget {
                 ),
               ),
             ),
+            // Obx(
+            //   () => SecondCard(
+            //     body: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.stretch,
+            //       children: [
+            //         SecondCard(
+            //           body: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             children: [
+            //               const AutoSizeText(
+            //                   "Fréquence de consommation de certains aliments"),
+            //               Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //                 children: [
+            //                   const Text("Choisir un critere :  "),
+            //                   DropdownButton(
+            //                     value: mainController.currentCompValue2.value,
+            //                     items: mainController.statValues
+            //                         .map((String items) {
+            //                       return DropdownMenuItem(
+            //                         value: items,
+            //                         child: Text(items),
+            //                       );
+            //                     }).toList(),
+            //                     onChanged: (String? newValue) {
+            //                       mainController.changeCompValue2(newValue);
+            //                     },
+            //                   ),
+            //                 ],
+            //               ),
+            //               Row(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   ElevatedButton(
+            //                     onPressed: () async {
+            //                       var res = await _client
+            //                           .getChartDataComp("stat_comp2", {
+            //                         "val":
+            //                             mainController.currentCompValue2.value,
+            //                       });
+            //                       mainController.changeHeatMapComp(res);
+            //                     },
+            //                     child: const Text("Afficher"),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //         SecondCard(
+            //           body: SizedBox(
+            //             width: 300.0,
+            //             height: 400.0,
+            //             child: Heatmap(
+            //               heatmapData: mainController.heatmapDataComp.value,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

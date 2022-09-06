@@ -20,7 +20,9 @@ class DatasetTable extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: PaginatedDataTable2(
-        columnSpacing: 10,
+        headingRowHeight: 50,
+
+        columnSpacing: 5,
         horizontalMargin: 5,
         minWidth: mainController.minWidth.value,
         empty: const Text(""),

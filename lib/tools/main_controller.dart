@@ -3,8 +3,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
+import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MainController extends GetxController {
   static MainController get to => Get.find();
@@ -23,9 +25,28 @@ class MainController extends GetxController {
     "nombre de personnees hospitalises",
     "nombre d'entrants en soins intensifs",
   ];
+
+  final compVariables = [
+    "Activité physique",
+    "Tabagisme",
+    "Fréquence de sortie",
+    "Transport public",
+    "Port du masque",
+    "Distanciation sociale",
+    "Source principale des repas",
+    "Nombre de repas par jour",
+    "Nombre de verres d'eau bus par jour",
+  ];
+
   final currentStatvalue = "tout".obs;
 
   final currentChronicValue = "tout".obs;
+
+  final currentCompValue2 = "tout".obs;
+
+  final currentCompVar = "Activité physique".obs;
+
+  final currentCompValue = "tout".obs;
 
   final filterstate = false.obs;
 
@@ -33,7 +54,15 @@ class MainController extends GetxController {
 
   final statList1 = <ChartData>[].obs;
 
+  final statList1_2 = <BoxPlotData>[].obs;
+
   final statList2 = <ChartData>[].obs;
+
+  final statList2_2 = <BoxPlotData>[].obs;
+
+  final compList = <ChartData>[].obs;
+
+  final compList2 = <BoxPlotData>[].obs;
 
   final predictList1 = <ChartData>[].obs;
 
@@ -112,11 +141,11 @@ class MainController extends GetxController {
 
   final predictFeatureSelect = "FeatureWiz".obs;
 
-  final predictDatasets = ["formulaire", "Dataset genere"];
+  final predictDatasets = ["Dataset d'enquete", "Dataset genere"];
 
-  final predictTrainDataset = "formulaire".obs;
+  final predictTrainDataset = "Dataset d'enquete".obs;
 
-  final predictTestDataset = "formulaire".obs;
+  final predictTestDataset = "Dataset d'enquete".obs;
 
   final predictListCheckbox1 = true.obs;
   final predictListCheckbox2 = true.obs;
@@ -160,23 +189,64 @@ class MainController extends GetxController {
   final predictionList = [
     "tout",
     "few_to_no_symptoms",
-    "complications",
-    "death",
+    "few_complications",
+    "critical_case",
   ];
 
-  final currentPredictionVariable = "death".obs;
+  final currentPredictionVariable = "critical_case".obs;
 
   final usersList = [].obs;
 
   final usersList2 = [].obs;
+
+  static const rows2 = [
+    "Predicted (critical_case)",
+    "Predicted (few_complications)",
+    "Predicted (few_to_no_symptoms)"
+  ];
+  static const columns = [
+    "Actual (critical_case)",
+    "Actual (few_complications)",
+    "Actual (few_to_no_symptoms)"
+  ];
+
+  final heatmapData = HeatmapData(rows: rows2, columns: columns, items: []).obs;
+
+  static const rowsComp = [
+    "fruits",
+    "vegetables",
+    "milk_products",
+    "meat",
+    "rice / pasta",
+    "bread",
+    "sweets",
+    "coffee / tea",
+    "juice / soda",
+    "tisane",
+  ];
+
+  static const columnsComp = [
+    "2+/day",
+    "1/day",
+    "2-5/week",
+    "1/week",
+    "rarely",
+  ];
+
+  final heatmapDataComp =
+      HeatmapData(rows: rowsComp, columns: columnsComp, items: []).obs;
+
+  final performances = <ChartData>[].obs;
+
+  final corrChronicData = <ChartSeries<BoxPlotData, String>>[].obs;
 
   // Controllers
 
   final PageController page = PageController();
 
   final textFieldController1 = TextEditingController(text: "100");
-  final textFieldController2 = TextEditingController(text: "0.8");
-  final textFieldController3 = TextEditingController(text: "0.05");
+  final textFieldController2 = TextEditingController(text: "0.9");
+  final textFieldController3 = TextEditingController(text: "0.9");
   final textFieldController4 = TextEditingController(text: "0");
   var textFieldController5 = TextEditingController(text: "100");
   final textFieldController6 = TextEditingController(text: "2600");
@@ -221,6 +291,18 @@ class MainController extends GetxController {
     currentChronicValue.value = newval;
   }
 
+  void changeCompValue2(newval) {
+    currentCompValue2.value = newval;
+  }
+
+  void changeCompVariable(newvar) {
+    currentCompVar.value = newvar;
+  }
+
+  void changeCompValue(newval) {
+    currentCompValue.value = newval;
+  }
+
   void filterMode(newval) {
     filterstate.value = newval;
   }
@@ -230,11 +312,18 @@ class MainController extends GetxController {
   }
 
   void changeStatData1(newval) {
-    statList1.value = newval;
+    statList1.value = newval[0];
+    statList1_2.value = newval[1];
   }
 
   void changeStatData2(newval) {
-    statList2.value = newval;
+    statList2.value = newval[0];
+    statList2_2.value = newval[1];
+  }
+
+  void changeCompData(newval) {
+    compList.value = newval[0];
+    compList2.value = newval[1];
   }
 
   void changePredcitData1(newval) {
@@ -378,13 +467,13 @@ class MainController extends GetxController {
           c = Theme.of(context).colorScheme.primaryContainer;
           t = "few_to_no_symptoms";
         }
-        if (item[1] == 0) {
-          c = Theme.of(context).colorScheme.secondaryContainer;
-          t = "complications";
-        }
         if (item[1] == 1) {
+          c = Theme.of(context).colorScheme.secondaryContainer;
+          t = "few_complications";
+        }
+        if (item[1] == 0) {
           c = Theme.of(context).colorScheme.tertiaryContainer;
-          t = "death";
+          t = "critical_case";
         }
 
         predictRows.value.add(
@@ -444,5 +533,76 @@ class MainController extends GetxController {
     textFieldController15 = TextEditingController(text: "");
     textFieldController16 = TextEditingController(text: "");
     textFieldController17 = TextEditingController(text: "");
+  }
+
+  void changeHeatMap(newval) {
+    heatmapData.value = HeatmapData(
+      columns: columns,
+      rows: rows2,
+      items: [
+        for (int row = 0; row < rows2.length; row++)
+          for (int col = 0; col < columns.length; col++)
+            HeatmapItem(
+              value: newval[row][col].toDouble(),
+              xAxisLabel: columns[col],
+              yAxisLabel: rows2[row],
+            ),
+      ],
+      colorPalette: colorPaletteRed,
+    );
+  }
+
+  void changePerformances(newval) {
+    List<ChartData> listChart = [];
+
+    listChart.add(ChartData("Accuracy", newval["Accuracy"].toDouble()));
+    listChart.add(ChartData("Precision", newval["Precision"].toDouble()));
+    listChart.add(ChartData("Recall", newval["Recall"].toDouble()));
+    listChart.add(ChartData("F1 score", newval["F1 score"].toDouble()));
+
+    performances.value = listChart;
+  }
+
+  void changeHeatMapComp(newval) {
+    heatmapDataComp.value = HeatmapData(
+      columns: columnsComp,
+      rows: rowsComp,
+      items: [
+        for (int row = 0; row < rowsComp.length; row++)
+          for (int col = 0; col < columnsComp.length; col++)
+            HeatmapItem(
+              value: newval[row][col].toDouble(),
+              xAxisLabel: columnsComp[col],
+              yAxisLabel: rowsComp[row],
+            ),
+      ],
+      colorPalette: colorPaletteGreen,
+    );
+  }
+
+  void updateCorrChronicData(newval) {
+    var listItems = <ChartSeries<BoxPlotData, String>>[];
+
+    for (int i = 0; i < 3; i++) {
+      listItems.add(
+        StackedColumn100Series<BoxPlotData, String>(
+          dataSource: newval,
+          xValueMapper: (BoxPlotData data, _) => data.x,
+          yValueMapper: (BoxPlotData data, _) => data.y[i],
+          width: 0.6,
+          spacing: 0.1,
+        ),
+      );
+    }
+
+    corrChronicData.value = listItems;
+  }
+
+  void getChronicData() async {
+    var res2 = await _client.getChartDataChronic(
+      "chronic_stat_2",
+      {},
+    );
+    updateCorrChronicData(res2);
   }
 }

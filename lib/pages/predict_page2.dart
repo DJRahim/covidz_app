@@ -24,27 +24,6 @@ class PredictPage2 extends StatelessWidget {
   final mainController = Get.find<MainController>();
   final DioClient _client = DioClient();
 
-  static const rows = [
-    "Predicted class ()",
-    "Predicted class ()",
-    "Predicted class ()"
-  ];
-  static const columns = [
-    "Actual class ()",
-    "Actual class ()",
-    "Actual class ()"
-  ];
-
-  var heatmapData = HeatmapData(rows: rows, columns: columns, items: [
-    for (int row = 0; row < rows.length; row++)
-      for (int col = 0; col < columns.length; col++)
-        HeatmapItem(
-          value: Random().nextDouble() * 6,
-          xAxisLabel: columns[col],
-          yAxisLabel: rows[row],
-        ),
-  ]);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -351,13 +330,14 @@ class PredictPage2 extends StatelessWidget {
                                                   "Normalisation",
                                               replacement: const Text(""),
                                               child: ToggleSwitch(
-                                                minWidth: 190,
+                                                minWidth: 160,
                                                 initialLabelIndex: 0,
                                                 totalSwitches: 2,
                                                 labels: const [
                                                   'Horizontalle (par ligne)',
                                                   'Verticalle (par colonne)'
                                                 ],
+                                                fontSize: 13,
                                                 onToggle: (index) {
                                                   mainController
                                                       .changeNorm(index);
@@ -385,6 +365,8 @@ class PredictPage2 extends StatelessWidget {
                               );
                               await getPredictions(context);
                               mainController.changePredictResult(true);
+                              mainController.changePredictPerformance(true);
+                              mainController.changeSettingsPredict(false);
                               Get.closeAllSnackbars();
                             },
                             child: const Text("Executer"),
@@ -429,7 +411,7 @@ class PredictPage2 extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.center,
                                         children: [
                                           SfCartesianChart(
                                             primaryXAxis: CategoryAxis(),
@@ -440,12 +422,8 @@ class PredictPage2 extends StatelessWidget {
                                             series: <
                                                 ChartSeries<ChartData, String>>[
                                               ColumnSeries<ChartData, String>(
-                                                  dataSource: [
-                                                    ChartData("accuracy", 0.8),
-                                                    ChartData("precision", 0.5),
-                                                    ChartData("recall", 0.6),
-                                                    ChartData("f1-score", 0.55)
-                                                  ],
+                                                  dataSource: mainController
+                                                      .performances.value,
                                                   xValueMapper:
                                                       (ChartData data, _) =>
                                                           data.x,
@@ -458,10 +436,11 @@ class PredictPage2 extends StatelessWidget {
                                             ],
                                           ),
                                           SizedBox(
-                                            width: 400.0,
-                                            height: 400.0,
+                                            width: 480.0,
+                                            height: 300.0,
                                             child: Heatmap(
-                                                heatmapData: heatmapData),
+                                                heatmapData: mainController
+                                                    .heatmapData.value),
                                           ),
                                         ],
                                       ),
@@ -532,12 +511,12 @@ class PredictPage2 extends StatelessWidget {
                                           ),
                                           SizedBox(
                                             height: 50,
-                                            width: 180,
+                                            width: 185,
                                             child: CheckboxListTile(
                                               value: mainController
                                                   .predictListCheckbox2.value,
                                               title: const AutoSizeText(
-                                                "complications",
+                                                "few_complications",
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                 ),
@@ -558,7 +537,7 @@ class PredictPage2 extends StatelessWidget {
                                               value: mainController
                                                   .predictListCheckbox3.value,
                                               title: const AutoSizeText(
-                                                "death",
+                                                "critical_case",
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                 ),
@@ -706,7 +685,7 @@ class PredictPage2 extends StatelessWidget {
                                                 },
                                               );
                                               mainController
-                                                  .changePredcitData3(res);
+                                                  .changePredcitData3(res[0]);
                                             },
                                             child: const Text("Afficher"),
                                           ),
@@ -715,6 +694,32 @@ class PredictPage2 extends StatelessWidget {
                                       PieChart(
                                         chartData:
                                             mainController.predictList3.value,
+                                        title: ChartTitle(
+                                            textStyle:
+                                                const TextStyle(fontSize: 13),
+                                            text:
+                                                "Graphe circulaire représentant les données"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SecondCard(
+                                  body: Column(
+                                    children: [
+                                      const AutoSizeText(
+                                        "Graphe de la correlation entre les maladies chroniques et l'evolution des cas predis",
+                                        maxFontSize: 14,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      SizedBox(
+                                        height: 400,
+                                        child: SfCartesianChart(
+                                          primaryXAxis: CategoryAxis(
+                                            labelRotation: 50,
+                                          ),
+                                          series: mainController
+                                              .corrChronicData.value,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -760,5 +765,8 @@ class PredictPage2 extends StatelessWidget {
 
     mainController.setMinWidth(18000.0);
     mainController.setPredictRowsAndHeaders(res[0], res[1]);
+
+    mainController.changeHeatMap(res[2][0]);
+    mainController.changePerformances(res[2][1]);
   }
 }

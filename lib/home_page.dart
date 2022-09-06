@@ -6,6 +6,7 @@ import 'package:covidz/old/settings_page.dart';
 import 'package:covidz/pages/stat_page1.dart';
 import 'package:covidz/pages/stat_page2.dart';
 import 'package:covidz/pages/stat_page3.dart';
+import 'package:covidz/pages/stat_page4.dart';
 import 'package:covidz/tools/app_theme.dart';
 import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -23,7 +24,8 @@ class HomeNew extends GetView<MainController> {
     DatasetPage(),
     StatPage1(),
     StatPage2(),
-    // StatPage3(),
+    StatPage3(),
+    StatPage4(),
     PredictPage1(),
     PredictPage2(),
     SettingsPage(),
@@ -107,10 +109,14 @@ class HomeNew extends GetView<MainController> {
                 title: 'Maladies chroniques',
                 route: 'StatPage2',
               ),
-              // AdminMenuItem(
-              //   title: 'Les facteurs les plus pertinents',
-              //   route: 'StatPage3',
-              // ),
+              AdminMenuItem(
+                title: 'Selection des facteurs les plus pertinents',
+                route: 'StatPage3',
+              ),
+              AdminMenuItem(
+                title: 'Comportement',
+                route: 'StatPage4',
+              ),
             ],
           ),
           AdminMenuItem(
@@ -145,17 +151,20 @@ class HomeNew extends GetView<MainController> {
             if (item.route == "StatPage2") {
               controller.page.jumpToPage(2);
             }
-            // if (item.route == "StatPage3") {
-            //   controller.page.jumpToPage(3);
-            // }
-            if (item.route == "PredictPage1") {
+            if (item.route == "StatPage3") {
               controller.page.jumpToPage(3);
             }
-            if (item.route == "PredictPage2") {
+            if (item.route == "StatPage4") {
               controller.page.jumpToPage(4);
             }
-            if (item.route == "Settings") {
+            if (item.route == "PredictPage1") {
               controller.page.jumpToPage(5);
+            }
+            if (item.route == "PredictPage2") {
+              controller.page.jumpToPage(6);
+            }
+            if (item.route == "Settings") {
+              controller.page.jumpToPage(7);
             }
           }
         },
