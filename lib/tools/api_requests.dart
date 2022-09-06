@@ -39,7 +39,7 @@ class DioClient {
 
       var user_type = data.data['user_type'];
       box.write("user_type", user_type);
-      return "success";
+      return user_type;
     } on Exception catch (e) {
       return "error";
     }
@@ -270,12 +270,8 @@ class DioClient {
     return list;
   }
 
-  Future<List> acceptRejectRequest(
+  Future<void> acceptRejectRequest(
       String route, Map<String, dynamic> args) async {
     Response data = await getQuery(route, args);
-
-    var list = List<dynamic>.from(data.data);
-
-    return list;
   }
 }

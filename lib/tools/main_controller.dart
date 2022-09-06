@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:ffi';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
@@ -240,6 +242,8 @@ class MainController extends GetxController {
 
   final corrChronicData = <ChartSeries<BoxPlotData, String>>[].obs;
 
+  final corrChronicDataPredict = <ChartSeries<BoxPlotData, String>>[].obs;
+
   // Controllers
 
   final PageController page = PageController();
@@ -272,6 +276,8 @@ class MainController extends GetxController {
   final rowNumberVis = false.obs;
   final settingsPredict = false.obs;
   final predictPerformance = false.obs;
+
+  final activeUser = true.obs;
 
   // Functions
 
@@ -598,11 +604,37 @@ class MainController extends GetxController {
     corrChronicData.value = listItems;
   }
 
+  void updateCorrChronicDataPredict(newval) {
+    var listItems = <ChartSeries<BoxPlotData, String>>[];
+
+    for (int i = 0; i < 3; i++) {
+      listItems.add(
+        StackedColumn100Series<BoxPlotData, String>(
+          dataSource: newval,
+          xValueMapper: (BoxPlotData data, _) => data.x,
+          yValueMapper: (BoxPlotData data, _) => data.y[i],
+          width: 0.6,
+          spacing: 0.1,
+        ),
+      );
+    }
+
+    corrChronicDataPredict.value = listItems;
+  }
+
   void getChronicData() async {
     var res2 = await _client.getChartDataChronic(
       "chronic_stat_2",
       {},
     );
     updateCorrChronicData(res2);
+  }
+
+  Future<void> checkActiveUser(email) async {
+    var res = await _client.getQuery("check_disabled", {'email': email});
+
+    var dict = Map<String, dynamic>.from(res.data);
+
+    activeUser.value = !dict['message'];
   }
 }

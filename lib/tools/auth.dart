@@ -75,6 +75,8 @@ class AuthController extends GetxController {
         res.add('email invalide.');
       } else if (e.code == 'user-not-found') {
         res.add("utilisateur n'existe pas.");
+      } else if (e.code == "user-disabled") {
+        res.add("utilisateur désactivé");
       }
     }
     return res;

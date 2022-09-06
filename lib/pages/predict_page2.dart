@@ -413,34 +413,53 @@ class PredictPage2 extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          SfCartesianChart(
-                                            primaryXAxis: CategoryAxis(),
-                                            primaryYAxis: NumericAxis(
-                                                minimum: 0,
-                                                maximum: 1,
-                                                interval: 0.1),
-                                            series: <
-                                                ChartSeries<ChartData, String>>[
-                                              ColumnSeries<ChartData, String>(
-                                                  dataSource: mainController
-                                                      .performances.value,
-                                                  xValueMapper:
-                                                      (ChartData data, _) =>
-                                                          data.x,
-                                                  yValueMapper:
-                                                      (ChartData data, _) =>
-                                                          data.y,
-                                                  name: 'Gold',
-                                                  color: const Color.fromRGBO(
-                                                      8, 142, 255, 1))
+                                          Column(
+                                            children: [
+                                              const AutoSizeText(
+                                                "Performances du modele de prediction",
+                                                maxFontSize: 14,
+                                              ),
+                                              SfCartesianChart(
+                                                primaryXAxis: CategoryAxis(),
+                                                primaryYAxis: NumericAxis(
+                                                    minimum: 0,
+                                                    maximum: 1,
+                                                    interval: 0.1),
+                                                series: <
+                                                    ChartSeries<ChartData,
+                                                        String>>[
+                                                  ColumnSeries<ChartData,
+                                                          String>(
+                                                      dataSource: mainController
+                                                          .performances.value,
+                                                      xValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.x,
+                                                      yValueMapper:
+                                                          (ChartData data, _) =>
+                                                              data.y,
+                                                      name: 'Gold',
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              8, 142, 255, 1))
+                                                ],
+                                              ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            width: 480.0,
-                                            height: 300.0,
-                                            child: Heatmap(
-                                                heatmapData: mainController
-                                                    .heatmapData.value),
+                                          Column(
+                                            children: [
+                                              const AutoSizeText(
+                                                "Matrice de confucion des resultats de prediction",
+                                                maxFontSize: 14,
+                                              ),
+                                              SizedBox(
+                                                width: 480.0,
+                                                height: 300.0,
+                                                child: Heatmap(
+                                                    heatmapData: mainController
+                                                        .heatmapData.value),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -686,6 +705,9 @@ class PredictPage2 extends StatelessWidget {
                                               );
                                               mainController
                                                   .changePredcitData3(res[0]);
+                                              mainController
+                                                  .updateCorrChronicDataPredict(
+                                                      res[1]);
                                             },
                                             child: const Text("Afficher"),
                                           ),
@@ -695,10 +717,11 @@ class PredictPage2 extends StatelessWidget {
                                         chartData:
                                             mainController.predictList3.value,
                                         title: ChartTitle(
-                                            textStyle:
-                                                const TextStyle(fontSize: 13),
-                                            text:
-                                                "Graphe circulaire représentant les données"),
+                                          textStyle:
+                                              const TextStyle(fontSize: 13),
+                                          text:
+                                              "Graphe circulaire représentant les données",
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -718,7 +741,7 @@ class PredictPage2 extends StatelessWidget {
                                             labelRotation: 50,
                                           ),
                                           series: mainController
-                                              .corrChronicData.value,
+                                              .corrChronicDataPredict.value,
                                         ),
                                       ),
                                     ],

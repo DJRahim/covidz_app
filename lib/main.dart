@@ -1,5 +1,6 @@
 import 'package:covidz/assets/firebase_auth_constants.dart';
 import 'package:covidz/home_page.dart';
+import 'package:covidz/home_page_admin.dart';
 import 'package:covidz/pages/auth_page.dart';
 import 'package:covidz/pages/dataset_page.dart';
 import 'package:covidz/pages/predict_page1.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   final themeController = Get.put(ThemeController());
   final mainController = Get.put(MainController());
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/predict_page', page: () => PredictPage1()),
         GetPage(name: '/settings_page', page: () => SettingsPage()),
         GetPage(name: '/auth', page: () => AuthPage()),
+        GetPage(
+            name: "/home",
+            page: () =>
+                box.read("user_type") == "normal" ? HomeNew() : HomeAdmin())
       ],
       home: AuthPage(),
     );

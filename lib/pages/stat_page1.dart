@@ -129,9 +129,10 @@ class StatPage1 extends StatelessWidget {
                                   majorTickLines:
                                       const MajorTickLines(size: 0)),
                               title: ChartTitle(
-                                  alignment: ChartAlignment.center,
-                                  textStyle: const TextStyle(fontSize: 13),
-                                  text: "Graphe des boxplots basé sur l'age"),
+                                alignment: ChartAlignment.center,
+                                textStyle: const TextStyle(fontSize: 13),
+                                text: "Graphe des boxplots basé sur l'age",
+                              ),
                             ),
                           ),
                           PieChart(

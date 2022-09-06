@@ -23,6 +23,9 @@ class AdminUserList extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: mainController.usersList2.length,
                   itemBuilder: (context, position) {
+                    mainController.checkActiveUser(
+                        mainController.usersList2[position]['email']);
+
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(40, 5, 40, 15),
                       child: Card(
@@ -66,7 +69,9 @@ class AdminUserList extends StatelessWidget {
                                   ElevatedButton(
                                     onPressed: () {
                                       var res = _client.acceptRejectRequest(
-                                        "disable_user",
+                                        mainController.activeUser.value
+                                            ? "disable_user"
+                                            : "activate_user",
                                         {
                                           'email': mainController
                                               .usersList2[position]['email'],
@@ -74,7 +79,9 @@ class AdminUserList extends StatelessWidget {
                                       );
                                       mainController.getUsersList2();
                                     },
-                                    child: const Text("Desactiver"),
+                                    child: mainController.activeUser.value
+                                        ? const Text("Desactiver")
+                                        : const Text("Activer"),
                                   ),
                                 ],
                               ),

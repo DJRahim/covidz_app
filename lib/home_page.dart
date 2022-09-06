@@ -28,7 +28,7 @@ class HomeNew extends GetView<MainController> {
     StatPage4(),
     PredictPage1(),
     PredictPage2(),
-    SettingsPage(),
+    // SettingsPage(),
   ];
 
   @override
@@ -133,11 +133,11 @@ class HomeNew extends GetView<MainController> {
               ),
             ],
           ),
-          AdminMenuItem(
-            title: 'Parametres',
-            route: 'Settings',
-            icon: Icons.settings,
-          ),
+          // AdminMenuItem(
+          //   title: 'Parametres',
+          //   route: 'Settings',
+          //   icon: Icons.settings,
+          // ),
         ],
         selectedRoute: '/',
         onSelected: (item) {
@@ -163,9 +163,9 @@ class HomeNew extends GetView<MainController> {
             if (item.route == "PredictPage2") {
               controller.page.jumpToPage(6);
             }
-            if (item.route == "Settings") {
-              controller.page.jumpToPage(7);
-            }
+            // if (item.route == "Settings") {
+            //   controller.page.jumpToPage(7);
+            // }
           }
         },
       ),

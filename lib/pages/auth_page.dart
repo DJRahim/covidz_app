@@ -1,4 +1,6 @@
 import 'package:covidz/assets/firebase_auth_constants.dart';
+import 'package:covidz/home_page.dart';
+import 'package:covidz/home_page_admin.dart';
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/auth.dart';
 import 'package:covidz/tools/main_controller.dart';
@@ -113,16 +115,21 @@ class AuthPage extends GetView<MainController> {
                                 controller.textFieldController14.text.trim(),
                               );
                               String res = await _client.getToken();
-                              if (res == "success") {
-                                controller.resetAuthPage();
-                                Get.put(AuthController());
+                              controller.resetAuthPage();
+
+                              if (res == "normal") {
+                                Get.offAll(HomeNew());
                               } else {
-                                Get.snackbar(
-                                  "Erreur d'authentification",
-                                  "probleme de generation du token",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  isDismissible: true,
-                                );
+                                if (res == "admin") {
+                                  Get.offAll(HomeAdmin());
+                                } else {
+                                  Get.snackbar(
+                                    "Erreur d'authentification",
+                                    "probleme de generation du token",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    isDismissible: true,
+                                  );
+                                }
                               }
                             } else {
                               Get.snackbar(
