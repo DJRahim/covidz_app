@@ -34,7 +34,12 @@ class StatPage3 extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Text("Choisir une methode :  "),
+                                  const Text(
+                                    "Choisir une methode :  ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                   DropdownButton(
                                     value: mainController
                                         .currentFeatureMethode.value,
@@ -65,7 +70,11 @@ class StatPage3 extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Text(
-                                      "Donner le nombre de facteurs :  "),
+                                    "Donner le nombre de facteurs :  ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                   SizedBox(
                                     width: 50.0,
                                     height: 10.0,

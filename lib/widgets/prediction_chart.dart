@@ -24,7 +24,7 @@ class PredictChart extends StatelessWidget {
           series: <CartesianSeries>[
             // Render column series
             ScatterSeries<ChartData, String>(
-              color: const Color.fromARGB(255, 121, 15, 15),
+              color: Color.fromARGB(255, 0, 0, 0),
               legendItemText: "Donnees historiques",
               dataSource: chartDataHist,
               xValueMapper: (ChartData data, _) => data.x,

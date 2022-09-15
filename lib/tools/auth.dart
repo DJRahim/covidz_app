@@ -25,6 +25,7 @@ class AuthController extends GetxController {
 
   _setInitialScreen(User? user) {
     var page;
+    // box.write("intro", false);
     if (user == null) {
       page = AuthPage();
     } else {
@@ -36,21 +37,83 @@ class AuthController extends GetxController {
       }
     }
     Get.offAll(
-      () => AnimatedSplashScreen(
-        nextScreen: page,
-        splash: const Text(
-          'COVIDZ',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 50.0,
-            color: Color.fromARGB(255, 17, 70, 105),
-          ),
-        ),
-        splashTransition: SplashTransition.fadeTransition,
-        animationDuration: const Duration(milliseconds: 1500),
-        duration: 2000,
-        backgroundColor: Colors.white,
-      ),
+      () => box.read("intro").runtimeType != Null && box.read("intro")
+          ? AnimatedSplashScreen(
+              nextScreen: page,
+              splash: const Text(
+                'COVIDZ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50.0,
+                  color: Color.fromARGB(255, 17, 70, 105),
+                ),
+              ),
+              splashTransition: SplashTransition.fadeTransition,
+              animationDuration: const Duration(milliseconds: 1500),
+              duration: 2000,
+              backgroundColor: Colors.white,
+            )
+          : Scaffold(
+              body: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/corona2.jpeg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: SizedBox.expand(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'COVIDZ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50.0,
+                          color: Color.fromARGB(255, 17, 70, 105),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        """Une application pour analyser et prédire la propagation du covid-19, 
+et l'évolution de l'état de ses patients 
+(pays ciblé : Algérie)""",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                      const SizedBox(height: 220),
+                      const Text(
+                        """Application réalisée par 2 étudiants en BioInformatique : S. SOUKEUR et A. DJEDDOU
+dans le cadre de leur projet de fin d'études de master,
+supervisé par : Mme S. Boukhedouma
+Département d'IA et de science des données
+Faculté d'informatique
+USTHB 
+2021/2022""",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      IconButton(
+                        onPressed: () {
+                          box.write("intro", true);
+                          Get.offAll(page);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_circle_right,
+                        ),
+                        iconSize: 40,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
     );
   }
 

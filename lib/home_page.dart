@@ -87,8 +87,14 @@ class HomeNew extends GetView<MainController> {
             ? const Color.fromARGB(255, 16, 37, 51)
             : const Color.fromARGB(255, 130, 179, 202),
         activeBackgroundColor: Theme.of(context).selectedRowColor,
-        textStyle: (Theme.of(context).appBarTheme.titleTextStyle)!,
-        activeTextStyle: (Theme.of(context).appBarTheme.titleTextStyle)!,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+        activeTextStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
         iconColor: Theme.of(context).appBarTheme.foregroundColor,
         activeIconColor: Theme.of(context).appBarTheme.foregroundColor,
         items: const [

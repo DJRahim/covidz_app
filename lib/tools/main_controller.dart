@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,6 +9,7 @@ import 'package:covidz/tools/classes.dart';
 import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MainController extends GetxController {
@@ -18,8 +20,11 @@ class MainController extends GetxController {
   final datasets = ["Dataset d'enquete", "Our World In Data (OWID)"].obs;
   final currentDataset = "Dataset d'enquete".obs;
 
-  final statVariables = ["age", "sexe", "groupe sanguin"];
+  final statVariables = ["age", "sexe", "groupe sanguin", "vaccination"];
   final currentStatVariable = "groupe sanguin".obs;
+
+  final predictModels1 = ["Prophet", "Arima"];
+  final currentPredictModel1 = "Prophet".obs;
 
   final statValues = [
     "tout",
@@ -57,6 +62,8 @@ class MainController extends GetxController {
   final statList1 = <ChartData>[].obs;
 
   final statList1_2 = <BoxPlotData>[].obs;
+
+  final predictStatList1_2 = <BoxPlotData>[].obs;
 
   final statList2 = <ChartData>[].obs;
 
@@ -143,7 +150,7 @@ class MainController extends GetxController {
 
   final predictFeatureSelect = "FeatureWiz".obs;
 
-  final predictDatasets = ["Dataset d'enquete", "Dataset genere"];
+  final predictDatasets = ["Dataset d'enquete", "Dataset genere"].obs;
 
   final predictTrainDataset = "Dataset d'enquete".obs;
 
@@ -190,9 +197,9 @@ class MainController extends GetxController {
 
   final predictionList = [
     "tout",
-    "few_to_no_symptoms",
-    "few_complications",
     "critical_case",
+    "few_complications",
+    "few_to_no_symptoms",
   ];
 
   final currentPredictionVariable = "critical_case".obs;
@@ -265,6 +272,10 @@ class MainController extends GetxController {
   var textFieldController15 = TextEditingController(text: "");
   var textFieldController16 = TextEditingController(text: "");
   var textFieldController17 = TextEditingController(text: "");
+  var textFieldController18 = TextEditingController(text: "1");
+  var textFieldController19 = TextEditingController(text: "0");
+  var textFieldController20 = TextEditingController(text: "1");
+  var textFieldController21 = TextEditingController(text: "85");
 
   final statVisible1 = false.obs;
   final statVisible2 = false.obs;
@@ -287,6 +298,10 @@ class MainController extends GetxController {
 
   void changeStatVariable(newvar) {
     currentStatVariable.value = newvar;
+  }
+
+  void changePredictModel1(newvar) {
+    currentPredictModel1.value = newvar;
   }
 
   void changeStatValue(newval) {
@@ -341,7 +356,8 @@ class MainController extends GetxController {
   }
 
   void changePredcitData3(newval) {
-    predictList3.value = newval;
+    predictList3.value = newval[0];
+    predictStatList1_2.value = newval[1];
   }
 
   void changeCountry(newval) {
@@ -456,20 +472,20 @@ class MainController extends GetxController {
     var checkboxlist = [];
 
     if (predictListCheckbox1.value) {
-      checkboxlist.add(2);
-    }
-    if (predictListCheckbox2.value) {
       checkboxlist.add(0);
     }
-    if (predictListCheckbox3.value) {
+    if (predictListCheckbox2.value) {
       checkboxlist.add(1);
+    }
+    if (predictListCheckbox3.value) {
+      checkboxlist.add(2);
     }
 
     for (var item in predictRowsOld.value) {
       if (checkboxlist.contains(item[1])) {
         String t = "";
         Color? c;
-        if (item[1] == 2) {
+        if (item[1] == 0) {
           c = Theme.of(context).colorScheme.primaryContainer;
           t = "few_to_no_symptoms";
         }
@@ -477,7 +493,7 @@ class MainController extends GetxController {
           c = Theme.of(context).colorScheme.secondaryContainer;
           t = "few_complications";
         }
-        if (item[1] == 0) {
+        if (item[1] == 2) {
           c = Theme.of(context).colorScheme.tertiaryContainer;
           t = "critical_case";
         }
@@ -506,10 +522,6 @@ class MainController extends GetxController {
 
   void changePredictionVariable(newval) {
     currentPredictionVariable.value = newval;
-  }
-
-  void updateDatasets(newval) {
-    datasets.value = newval;
   }
 
   void changeRowNumberVis(newval) {
@@ -592,12 +604,12 @@ class MainController extends GetxController {
     for (int i = 0; i < 3; i++) {
       listItems.add(
         StackedColumn100Series<BoxPlotData, String>(
-          dataSource: newval,
-          xValueMapper: (BoxPlotData data, _) => data.x,
-          yValueMapper: (BoxPlotData data, _) => data.y[i],
-          width: 0.6,
-          spacing: 0.1,
-        ),
+            dataSource: newval,
+            xValueMapper: (BoxPlotData data, _) => data.x,
+            yValueMapper: (BoxPlotData data, _) => data.y[i],
+            width: 0.7,
+            spacing: 0.1,
+            name: predictionList[i + 1]),
       );
     }
 
@@ -613,8 +625,9 @@ class MainController extends GetxController {
           dataSource: newval,
           xValueMapper: (BoxPlotData data, _) => data.x,
           yValueMapper: (BoxPlotData data, _) => data.y[i],
-          width: 0.6,
+          width: 0.7,
           spacing: 0.1,
+          name: predictionList[i + 1],
         ),
       );
     }
@@ -636,5 +649,53 @@ class MainController extends GetxController {
     var dict = Map<String, dynamic>.from(res.data);
 
     activeUser.value = !dict['message'];
+  }
+
+  void addingDataset(name) {
+    final box = GetStorage();
+
+    var list;
+
+    var dataset = box.read("datasets");
+    if (dataset.runtimeType == Null) {
+      list = [];
+    } else {
+      list = List<String>.from(dataset);
+    }
+
+    if (!list.contains(name)) {
+      list.add(name);
+      datasets.value = datasets.value + list;
+      predictDatasets.value = predictDatasets.value + list;
+
+      box.write("datasets", list);
+    }
+
+    // var data = box.read("datasets");
+    // dynamic js = jsonDecode(data);
+
+    // var l = List<dynamic>.from(js);
+
+    // print(l);
+  }
+
+  void readDatasets() {
+    final box = GetStorage();
+
+    // box.write("datasets", []);
+
+    List<String> list;
+
+    var dataset = box.read("datasets");
+    if (dataset.runtimeType == Null) {
+      list = [];
+    } else {
+      list = List<String>.from(dataset);
+    }
+
+    if (list.isNotEmpty && !datasets.value.contains(list[0])) {
+      datasets.value = datasets.value + list;
+      predictDatasets.value = predictDatasets.value + list;
+    }
   }
 }

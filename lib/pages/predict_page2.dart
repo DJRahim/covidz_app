@@ -1,20 +1,16 @@
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:covidz/tools/api_requests.dart';
 import 'package:covidz/tools/classes.dart';
 import 'package:covidz/tools/dataset_source.dart';
 import 'package:covidz/tools/main_controller.dart';
-import 'package:covidz/widgets/card_main.dart';
 import 'package:covidz/widgets/card_second.dart';
 import 'package:covidz/widgets/dataset_table.dart';
 import 'package:covidz/widgets/pie_chart.dart';
-import 'package:covidz/widgets/prediction_chart.dart';
 import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -47,7 +43,11 @@ class PredictPage2 extends StatelessWidget {
                                   const Padding(
                                     padding: EdgeInsets.all(4.0),
                                     child: AutoSizeText(
-                                        "Dataset d'entraînement : "),
+                                      "Dataset d'entraînement : ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
                                   DropdownButton(
                                     value: mainController
@@ -71,7 +71,11 @@ class PredictPage2 extends StatelessWidget {
                                   const Padding(
                                     padding: EdgeInsets.all(4.0),
                                     child: AutoSizeText(
-                                        "Dataset de prediction : "),
+                                      "Dataset de prediction : ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
                                   DropdownButton(
                                     value:
@@ -99,8 +103,12 @@ class PredictPage2 extends StatelessWidget {
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.all(4.0),
-                                    child:
-                                        AutoSizeText("Modele de prediction : "),
+                                    child: AutoSizeText(
+                                      "Modele de prediction : ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
                                   DropdownButton(
                                     value: mainController
@@ -381,8 +389,14 @@ class PredictPage2 extends StatelessWidget {
                                 },
                                 child: Row(
                                   children: const <Widget>[
-                                    Icon(Icons.arrow_right),
-                                    AutoSizeText("  Performances"),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.black,
+                                    ),
+                                    AutoSizeText(
+                                      "  Performances",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -402,8 +416,15 @@ class PredictPage2 extends StatelessWidget {
                                         },
                                         child: Row(
                                           children: const <Widget>[
-                                            Icon(Icons.arrow_drop_down),
-                                            AutoSizeText("  Performances"),
+                                            Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Colors.black,
+                                            ),
+                                            AutoSizeText(
+                                              "  Performances",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -449,7 +470,7 @@ class PredictPage2 extends StatelessWidget {
                                           Column(
                                             children: [
                                               const AutoSizeText(
-                                                "Matrice de confucion des resultats de prediction",
+                                                "                                       Matrice de confucion des resultats de prediction",
                                                 maxFontSize: 14,
                                               ),
                                               SizedBox(
@@ -479,8 +500,14 @@ class PredictPage2 extends StatelessWidget {
                                 },
                                 child: Row(
                                   children: const <Widget>[
-                                    Icon(Icons.arrow_right),
-                                    AutoSizeText("  liste de résultats"),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.black,
+                                    ),
+                                    AutoSizeText(
+                                      "  liste de résultats",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -497,9 +524,15 @@ class PredictPage2 extends StatelessWidget {
                                         },
                                         child: Row(
                                           children: const <Widget>[
-                                            Icon(Icons.arrow_drop_down),
+                                            Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Colors.black,
+                                            ),
                                             AutoSizeText(
-                                                "  liste de résultats"),
+                                              "  liste de résultats",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -599,8 +632,14 @@ class PredictPage2 extends StatelessWidget {
                                 },
                                 child: Row(
                                   children: const <Widget>[
-                                    Icon(Icons.arrow_right),
-                                    AutoSizeText("  statistiques"),
+                                    Icon(
+                                      Icons.arrow_right,
+                                      color: Colors.black,
+                                    ),
+                                    AutoSizeText(
+                                      "  statistiques",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -617,8 +656,15 @@ class PredictPage2 extends StatelessWidget {
                                         },
                                         child: Row(
                                           children: const <Widget>[
-                                            Icon(Icons.arrow_drop_down),
-                                            AutoSizeText("  statistiques"),
+                                            Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Colors.black,
+                                            ),
+                                            AutoSizeText(
+                                              "  statistiques",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -630,7 +676,7 @@ class PredictPage2 extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              const Text("Variable  :  "),
+                                              const Text("Variable cible :  "),
                                               DropdownButton(
                                                 value: mainController
                                                     .currentPredictStat.value,
@@ -704,24 +750,76 @@ class PredictPage2 extends StatelessWidget {
                                                 },
                                               );
                                               mainController
-                                                  .changePredcitData3(res[0]);
+                                                  .changePredcitData3(res);
+
                                               mainController
                                                   .updateCorrChronicDataPredict(
-                                                      res[1]);
+                                                      res[2]);
                                             },
                                             child: const Text("Afficher"),
                                           ),
                                         ],
                                       ),
-                                      PieChart(
-                                        chartData:
-                                            mainController.predictList3.value,
-                                        title: ChartTitle(
-                                          textStyle:
-                                              const TextStyle(fontSize: 13),
-                                          text:
-                                              "Graphe circulaire représentant les données",
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 360,
+                                            width: 360,
+                                            child: SfCartesianChart(
+                                              series: <
+                                                  BoxAndWhiskerSeries<
+                                                      BoxPlotData, dynamic>>[
+                                                BoxAndWhiskerSeries<BoxPlotData,
+                                                    dynamic>(
+                                                  dataSource: mainController
+                                                      .predictStatList1_2.value,
+                                                  xValueMapper:
+                                                      (BoxPlotData data, _) =>
+                                                          data.x,
+                                                  yValueMapper:
+                                                      (BoxPlotData data, _) =>
+                                                          data.y,
+                                                ),
+                                              ],
+                                              primaryXAxis: CategoryAxis(
+                                                  majorGridLines:
+                                                      const MajorGridLines(
+                                                          width: 0),
+                                                  labelIntersectAction:
+                                                      AxisLabelIntersectAction
+                                                          .rotate45),
+                                              primaryYAxis: NumericAxis(
+                                                  name: 'Age',
+                                                  axisLine:
+                                                      const AxisLine(width: 0),
+                                                  majorTickLines:
+                                                      const MajorTickLines(
+                                                          size: 0)),
+                                              title: ChartTitle(
+                                                alignment:
+                                                    ChartAlignment.center,
+                                                textStyle: const TextStyle(
+                                                    fontSize: 13),
+                                                text:
+                                                    "Graphe des boxplots basé sur l'age",
+                                              ),
+                                            ),
+                                          ),
+                                          PieChart(
+                                            chartData: mainController
+                                                .predictList3.value,
+                                            title: ChartTitle(
+                                              textStyle:
+                                                  const TextStyle(fontSize: 13),
+                                              text:
+                                                  "Graphe circulaire représentant les données",
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -737,8 +835,12 @@ class PredictPage2 extends StatelessWidget {
                                       SizedBox(
                                         height: 400,
                                         child: SfCartesianChart(
+                                          legend: Legend(
+                                            isVisible: true,
+                                          ),
                                           primaryXAxis: CategoryAxis(
-                                            labelRotation: 50,
+                                            labelRotation: 70,
+                                            labelAlignment: LabelAlignment.end,
                                           ),
                                           series: mainController
                                               .corrChronicDataPredict.value,

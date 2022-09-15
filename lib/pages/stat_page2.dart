@@ -32,7 +32,12 @@ class StatPage2 extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const Text("Choisir un critere :  "),
+                              const Text(
+                                "Choisir un critere :  ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                               DropdownButton(
                                 value: mainController.currentChronicValue.value,
                                 items: mainController.statValues
@@ -140,7 +145,11 @@ class StatPage2 extends StatelessWidget {
                       height: 400,
                       child: SfCartesianChart(
                         primaryXAxis: CategoryAxis(
-                          labelRotation: 50,
+                          labelRotation: 70,
+                          labelAlignment: LabelAlignment.end,
+                        ),
+                        legend: Legend(
+                          isVisible: true,
                         ),
                         series: mainController.corrChronicData.value,
                       ),

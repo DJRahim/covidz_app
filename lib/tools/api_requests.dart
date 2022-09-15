@@ -54,6 +54,7 @@ class DioClient {
 
     List<ChartData> listChart = [];
     List<BoxPlotData> listChart2 = <BoxPlotData>[];
+    List<BoxPlotData> listChart3 = <BoxPlotData>[];
 
     double s = 0.0;
 
@@ -80,7 +81,13 @@ class DioClient {
       listChart2.add(BoxPlotData(i[0], a));
     }
 
-    return [listChart, listChart2];
+    if (route == "predict_stat") {
+      for (var i in list[2]) {
+        listChart3.add(BoxPlotData(i[0], i[1]));
+      }
+    }
+
+    return [listChart, listChart2, listChart3];
   }
 
   Future<List> getChartDataChronic(

@@ -20,11 +20,12 @@ class DatasetPage extends StatelessWidget {
   final mainController = Get.find<MainController>();
   final _url = Uri.parse("https://forms.gle/pZqRVXpq2qVThSby8");
   final DioClient _client = DioClient();
-  final _firebaseStorage = FirebaseStorage.instance;
   final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
+    mainController.readDatasets();
+
     return Container(
       padding: const EdgeInsets.all(10),
       child: SingleChildScrollView(
@@ -46,7 +47,12 @@ class DatasetPage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Text("Choisir le dataset :  "),
+                                  const Text(
+                                    "Choisir le dataset :  ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                   DropdownButton(
                                     value: mainController.currentDataset.value,
                                     items: mainController.datasets
@@ -120,31 +126,48 @@ class DatasetPage extends StatelessWidget {
                                   );
 
                                   String? f = result?.files.single.path;
+                                  String? fileName = result?.files.single.name;
+
+                                  var str = fileName!
+                                      .substring(0, fileName.length - 4);
 
                                   if (result != null) {
                                     File file = File(f!);
 
-                                    var snapshot = await _firebaseStorage
-                                        .ref()
-                                        .child('images/imageName')
-                                        .putFile(file);
-                                    var downloadUrl =
-                                        await snapshot.ref.getDownloadURL();
-                                    // Save it in get_storage
-                                    var list = box.read("datasets");
-                                    list.add(downloadUrl);
-                                    box.write("datasets", list);
-                                    mainController.updateDatasets(list);
+                                    final contents = await file.readAsString();
+
+                                    // send to api
+                                    _client.getQuery(
+                                      "new_dataset",
+                                      {
+                                        "name": str,
+                                        "contents": contents,
+                                      },
+                                    );
+
+                                    mainController.addingDataset(str);
                                   }
                                 },
                                 child: const Text("Ajouter un dataset"),
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  _client.getQuery("refresh_dataset", {
-                                    "dataset":
-                                        mainController.currentDataset.value,
-                                  });
+                                  Get.snackbar(
+                                    "Chargement",
+                                    "telechargement du dataset",
+                                    showProgressIndicator: true,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    isDismissible: false,
+                                    duration: const Duration(hours: 1),
+                                  );
+                                  _client.getQuery(
+                                    "refresh_dataset",
+                                    {
+                                      "dataset":
+                                          mainController.currentDataset.value,
+                                    },
+                                  );
+                                  Get.closeAllSnackbars();
                                 },
                                 child: const Text("Rafraîchir le dataset"),
                               ),
